@@ -24,7 +24,7 @@ export class Game {
         this.events = new Events();
         this.engine = new Engine();
         this.keyInput = new KeyInput();
-        
+
         this.engine.addSystem(new TestSystem(this.events));
         this.engine.addSystem(new RenderSystem(app.stage));
         this.engine.addSystem(new InputSystem(this.keyInput));

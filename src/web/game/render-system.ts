@@ -7,7 +7,7 @@ import { Sprite } from './sprite';
 
 import data from '../assets/sprites-colored/spritesheet.json';
 import image from '../assets/sprites-colored/spritesheet.png';
-import { createPoint } from './point-3d';
+import { createPoint, addPoints } from './point-3d';
 
 export class RenderSystem implements System {
     
@@ -47,8 +47,12 @@ export class RenderSystem implements System {
 
                 this.stage.addChild(sprite);
             }
-            sprite.position.x = position.state.position.x;
-            sprite.position.y = position.state.position.y;
+
+            const spritePos = addPoints(position.state.position, component.state.offSet);
+
+            sprite.position.x = spritePos.x;
+            sprite.position.y = spritePos.y;
+            sprite.zIndex = spritePos.y;
 
             engine.updateComponent(component);
         });

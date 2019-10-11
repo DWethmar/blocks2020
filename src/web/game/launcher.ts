@@ -10,22 +10,34 @@ const game = new Game(document.body);
 const gameObject = createGameObject('player1');
 game.engine.addGameObject(gameObject);
 game.engine.addComponent(
-    createPositionComponent(gameObject.id, null)
+    createPositionComponent(gameObject.id, createPoint(20, 20))
 );
 game.engine.addComponent(
     createMovementControlsComponent(gameObject.id)
 );
 game.engine.addComponent(
-    createSpriteComponent(gameObject.id, 'colored_transparent-30.png', 16, 16)
+    createSpriteComponent({
+        gameObjectId: gameObject.id,
+        spriteName: 'colored_transparent-30.png', 
+        width: 16,
+        height: 16,
+        offSet: createPoint(-8, -16, 0)
+    })
 );
 
 const tree = createGameObject('tree');
 game.engine.addGameObject(tree);
 game.engine.addComponent(
-    createPositionComponent(tree.id, createPoint(20, 20))
+    createPositionComponent(tree.id, createPoint(50, 50))
 );
 game.engine.addComponent(
-    createSpriteComponent(tree.id, 'colored_transparent-31.png', 16, 16)
+    createSpriteComponent({
+        gameObjectId: tree.id,
+        spriteName: 'colored_transparent-31.png',
+        width: 16,
+        height: 16,
+        offSet: createPoint(-8, -16, 0)
+    })
 );
 
 // DEBUG
@@ -36,7 +48,7 @@ list.style.cssFloat = 'right';
 game.engine.onChange()
     .pipe(
         throttleTime(50),
-        // distinctUndtilChanged(),
+        // distinctUntilChanged(),
     )
     .subscribe(state => {
         while (list.firstChild) {
@@ -44,7 +56,7 @@ game.engine.onChange()
         }
         Object.values(state.gameObjects).forEach(gameObject => {
             const li = document.createElement('li');
-            li.innerHTML = `<b>${gameObject.id}</b> ${gameObject.name}`;
+            li.innerHTML = `<span title="${gameObject.id}">${gameObject.name}</span>`;
             
             const componentList: HTMLUListElement = document.createElement("ul"); 
             componentList.classList.add('components');
@@ -53,7 +65,7 @@ game.engine.onChange()
                     const component = state.components[componentId];
                     if (component) {
                         const subLi = document.createElement('li');
-                        subLi.innerHTML = `<b>${component.id}</b>  <br /> ${component.type}<pre>${JSON.stringify(component.state, null, ' ')}</pre>`;
+                        subLi.innerHTML = `<span title="${component.id}">${component.type}</span><pre>${JSON.stringify(component.state, null, ' ')}</pre>`;
                         componentList.appendChild(subLi);
                     }
                 }

@@ -12,6 +12,14 @@ export interface Position {
     velocity : Point3D,
 }
 
+export function addPoints(a: Point3D, b: Point3D) {
+    return {
+        x: a.x + b.x,
+        y: a.y + b.y,
+        z: a.z + a.z
+    }
+}
+
 export function createPoint(x: number = 0, y: number = 0, z: number = 0): Point3D {
     return {x: x, y: y, z: z};
 }
