@@ -12,15 +12,19 @@ export interface Position {
     velocity : Point3D,
 }
 
-export function createPoint(): Point3D {
+export function createPoint(x: number = 0, y: number = 0, z: number = 0): Point3D {
     return {x: 0, y: 0, z: 0};
+}
+
+export function derp(): Point3D {
+    return {};
 }
 
 export function createPositionComponent(gameObjectId: string, point?: Point3D): Component<Position> {
     return {
-        id: createUniqueId(),
-        gameObjectId: gameObjectId,
-        type: ComponentType.POSITION,
+        id:             createUniqueId(),
+        gameObjectId:   gameObjectId,
+        type:           ComponentType.POSITION,
         state: {
             position: point ? point : createPoint(),
             velocity: createPoint(),

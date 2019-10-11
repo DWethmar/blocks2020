@@ -1,6 +1,6 @@
 import { Game } from './game';
 import { createGameObject } from './game-object';
-import { createPositionComponent } from './point-3d';
+import { createPositionComponent, createPoint } from './point-3d';
 import { createSpriteComponent } from './sprite';
 import { distinctUntilChanged, throttleTime } from 'rxjs/operators';
 
@@ -15,15 +15,24 @@ game.engine.addComponent(
     createSpriteComponent(gameObject.id, 'colored_transparent-30.png', 16, 16)
 );
 
+const gameObject2 = createGameObject('player2');
+game.engine.addGameObject(gameObject2);
+game.engine.addComponent(
+    createPositionComponent(gameObject2.id, createPoint(20, 20))
+);
+game.engine.addComponent(
+    createSpriteComponent(gameObject2.id, 'colored_transparent-30.png', 16, 16)
+);
+
 // DEBUG
 const list: HTMLUListElement = document.createElement("ul"); 
 list.classList.add('game-objects');
 list.style.cssFloat = 'right';
 
-game.engine.getState()
+game.engine.onChange()
     .pipe(
-        throttleTime(200),
-        distinctUntilChanged(),
+        throttleTime(50),
+        // distinctUndtilChanged(),
     )
     .subscribe(state => {
         while (list.firstChild) {

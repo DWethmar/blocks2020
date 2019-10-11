@@ -11,5 +11,9 @@ export class TestSystem implements System {
         this.events = events;
     }
 
-    onAttach(engine: Engine) {  }
+    onAttach(engine: Engine) { }
+    
+    update(engine: Engine, deltaTime: number) {
+
+    }
 }

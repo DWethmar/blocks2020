@@ -1,100 +1,87 @@
 import * as PIXI from 'pixi.js'
 import { Engine } from './engine';
-import { withLatestFrom, map, filter, buffer, take, groupBy, mergeAll, distinctUntilChanged, tap } from 'rxjs/operators';
 import { ComponentType, Component } from './component';
 import { System } from './system';
-import { fromEvent, Observable, merge } from 'rxjs';
 import { KeyUtil } from './key-utl';
 import { Position } from './point-3d';
+import { KeyInput } from './key-input';
 
 export class InputSystem implements System {
     
-    public spritesheet: PIXI.Spritesheet;
+    private keyInput: KeyInput;
 
-    private keysDown: Observable<{}>;
-    private keysDownPerFrame: Observable<any>;
-
-    constructor() {
-        this.keysDown = fromEvent(document, 'keydown')
-            .pipe(
-                map((event: KeyboardEvent) => {
-                    const name = KeyUtil.codeToKey(event.keyCode.toString());
-                    if (name !== '') {
-                        let keyMap = {};
-                        keyMap[name] = event.code;
-                        return keyMap;
-                    } else {
-                        return undefined;
-                    }
-                }),
-                filter((keyMap) => keyMap !== undefined)
-        );
+    constructor(keyInput: KeyInput) {
+        this.keyInput = keyInput;
     }
 
-    async onAttach(engine: Engine) {
-        this.keysDownPerFrame = this.keysDown
-            .pipe(
-                buffer(engine.frames),
-                map((frames: Array<any>) => {
-                    return frames.reduce((acc, curr) => {
-                        return Object.assign(acc, curr);
-                    }, {});
-                })
-            );
+    onAttach(engine: Engine) {
 
-        var keyDowns = fromEvent(document, "keydown") as Observable<KeyboardEvent>;
-        var keyUps = fromEvent(document, "keyup") as Observable<KeyboardEvent>;
+    }
 
-        var keyPresses = merge(keyDowns, keyUps).pipe(
-            tap((x) => { 
-                debugger;
-                console.log(x);
-            }),
-            groupBy(e => e.keyCode),
-            map(group => group.pipe(distinctUntilChanged(null, e => e.type))),
-            mergeAll()
-        );
-        
-        engine.frames.pipe(
-            withLatestFrom(
-                this.keysDownPerFrame,
-                engine.getComponentsByType(ComponentType.POSITION),
-                keyPresses
-            ),
-        ).subscribe(([tick, keysDown, components, x]) => {
-            
-            const speed = .5;
-            const maxSpeed = 9;
+    update(engine: Engine, deltaTime: number) {
 
-            components.forEach((component: Component<Position>) => {
+        const maxSpeed = 2;
+        const speed = .2;
 
-                const keyUp     = keysDown.hasOwnProperty('w');
-                const keyDown   = keysDown.hasOwnProperty('s');
-                const keyLeft   = keysDown.hasOwnProperty('a');
-                const keyRight  = keysDown.hasOwnProperty('d');
+        engine.getComponentsByType(ComponentType.POSITION).forEach((component: Component<Position>) => {
 
-                console.log({
-                    keyUp: keyUp,
-                    keyDown: keyDown,
-                    keyLeft: keyLeft,
-                    keyRight: keyRight,
-                });
+            const keyUp     = this.keyInput.isKeyPressed('w');
+            const keyDown   = this.keyInput.isKeyPressed('s');
+            const keyLeft   = this.keyInput.isKeyPressed('a');
+            const keyRight  = this.keyInput.isKeyPressed('d');
 
-                if (keyRight) {
-                    console.log(x);
-                    if (component.state.velocity.x > maxSpeed) {
-                        component.state.velocity.x = maxSpeed;
-                    } else {
-                        component.state.velocity.x += speed;
-                    }
+            if (keyUp && !keyDown) {
+                if (component.state.velocity.y < -maxSpeed) {
+                    component.state.velocity.y = -maxSpeed;
                 } else {
-                    if (component.state.velocity.x > 0) {
-                        component.state.velocity.x -= speed;
-                    }
+                    component.state.velocity.y -= speed;
                 }
+            } else {
+                if (component.state.velocity.y < 0) {
+                    component.state.velocity.y += speed;
+                }
+            }
 
-                engine.updateComponent(component);
-            });
+            if (keyDown && !keyUp) {
+                if (component.state.velocity.y > maxSpeed) {
+                    component.state.velocity.y = maxSpeed;
+                } else {
+                    component.state.velocity.y += speed;
+                }
+            } else {
+                if (component.state.velocity.y > 0) {
+                    component.state.velocity.y -= speed;
+                }
+            }
+
+            if (keyLeft && !keyRight) {
+                if (component.state.velocity.x < -maxSpeed) {
+                    component.state.velocity.x = -maxSpeed;
+                } else {
+                    component.state.velocity.x -= speed;
+                }
+            } else {
+                if (component.state.velocity.x < 0) {
+                    component.state.velocity.x += speed;
+                }
+            }
+
+            if (keyRight && !keyLeft) {
+                if (component.state.velocity.x > maxSpeed) {
+                    component.state.velocity.x = maxSpeed;
+                } else {
+                    component.state.velocity.x += speed;
+                }
+            } else {
+                if (component.state.velocity.x > 0) {
+                    component.state.velocity.x -= speed;
+                }
+            }
+
+            component.state.velocity.y = Math.round(component.state.velocity.y * 1000) / 1000
+            component.state.velocity.x = Math.round(component.state.velocity.x * 1000) / 1000
+
+            engine.updateComponent(component);
         });
     }
 }

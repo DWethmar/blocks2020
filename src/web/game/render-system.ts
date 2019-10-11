@@ -1,11 +1,13 @@
 import * as PIXI from 'pixi.js'
 import { Engine } from './engine';
 import { withLatestFrom, take } from 'rxjs/operators';
-import { ComponentType } from './component';
+import { ComponentType, Component } from './component';
 import { System } from './system';
+import { Sprite } from './sprite';
 
 import data from '../assets/sprites-colored/spritesheet.json';
 import image from '../assets/sprites-colored/spritesheet.png';
+import { createPoint } from './point-3d';
 
 export class RenderSystem implements System {
     
@@ -25,27 +27,30 @@ export class RenderSystem implements System {
                 resolve();
             });
         });
-        engine.frames.pipe(
-            withLatestFrom(engine.getComponentsByType(ComponentType.SPRITE))
-        ).subscribe(([tick, components]) => {
-            components.forEach(component => {
-                engine.getComponent(component.gameObjectId, ComponentType.POSITION)
-                    .pipe(take(1))
-                    .subscribe(position => {
-                        let sprite = this.stage.getChildByName(component.id) as PIXI.Sprite;
-                        if (!sprite && this.spritesheet.textures.hasOwnProperty(component.state.name)) {
-                            sprite = new PIXI.Sprite(this.spritesheet.textures[component.state.name]);
-                            sprite.name = component.id;
+    }
 
-                            sprite.width = component.state.width;
-                            sprite.height = component.state.height;
+    update(engine: Engine, deltaTime: number) {
+        engine.getComponentsByType(ComponentType.SPRITE).forEach((component: Component<Sprite>) => {
 
-                            this.stage.addChild(sprite);
-                        }
-                        sprite.position.x = position.state.position.x;
-                        sprite.position.y = position.state.position.y;
-                    });
-            });
+            let position = engine.getComponent(component.gameObjectId, ComponentType.POSITION);
+            if (!position) {
+                return;
+            }
+
+            let sprite = this.stage.getChildByName(component.id) as PIXI.Sprite;
+            if (!sprite && this.spritesheet.textures.hasOwnProperty(component.state.name)) {
+                sprite = new PIXI.Sprite(this.spritesheet.textures[component.state.name]);
+                sprite.name = component.id;
+
+                sprite.width = component.state.width;
+                sprite.height = component.state.height;
+
+                this.stage.addChild(sprite);
+            }
+            sprite.position.x = position.state.position.x;
+            sprite.position.y = position.state.position.y;
+
+            engine.updateComponent(component);
         });
     }
 }
