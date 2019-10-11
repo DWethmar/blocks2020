@@ -10,7 +10,6 @@ export interface Point3D {
 export interface Position {
     position: Point3D,
     velocity : Point3D,
-    acceleration : Point3D,
 }
 
 export function createPoint(): Point3D {
@@ -25,7 +24,6 @@ export function createPositionComponent(gameObjectId: string, point?: Point3D): 
         state: {
             position: point ? point : createPoint(),
             velocity: createPoint(),
-            acceleration: createPoint(),
         }
     };
 }

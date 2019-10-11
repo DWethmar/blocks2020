@@ -12,7 +12,10 @@ export class Game {
     public events: Events;
 
     constructor(container: HTMLElement) {
-        const app = new PIXI.Application();
+        const app = new PIXI.Application({
+            width: 200,
+            height: 200,
+        });
         container.appendChild(app.view);
 
         this.events = new Events();
@@ -23,8 +26,8 @@ export class Game {
         this.engine.addSystem(new InputSystem());
         this.engine.addSystem(new PhysicsSystem(this.events));
 
-        app.ticker.add((delta: number) => {
-            this.engine.update(delta);
-        });
+        // app.ticker.add((delta: number) => {
+        //     this.engine.update(delta);
+        // });
     }
 }

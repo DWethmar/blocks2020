@@ -1,5 +1,5 @@
 import { BehaviorSubject, Observable, iif, of, Subject } from 'rxjs';
-import { take, map, tap, mergeMap, scan } from 'rxjs/operators';
+import { take, map, tap, mergeMap, scan, share, expand, filter } from 'rxjs/operators';
 
 import { GameState, initState } from './game-state';
 import { GameObject } from './game-object';
@@ -7,40 +7,60 @@ import { System } from './system';
 import { Component, ComponentType } from './component';
 
 export interface Tick {
-    delta: number,
+    frameStartTime: number;
+    deltaTime: number,
+}
+
+export const clampTo30FPS = (frame: Tick) => {
+    if (frame.deltaTime > (1 / 30)) {
+        frame.deltaTime = 1 / 30;
+    }
+    return frame;
 }
 
 export class Engine {
 
     private state: BehaviorSubject<GameState>;
-    private tick: Subject<Tick>;
     private systems: System[];
+
+    public readonly frames: Observable<number>;
 
     constructor() {
         this.state = new BehaviorSubject<GameState>(initState);
-        this.tick = new Subject();
         this.systems = [];
-    }
 
-    public getTick() {
-        return this.tick;
+        const calculateStep: (prevFrame: Tick) => Observable<Tick> = (prevFrame: Tick) => {
+            return Observable.create((observer) => {
+                requestAnimationFrame((frameStartTime) => {
+                    const deltaTime = prevFrame ? (frameStartTime - prevFrame.frameStartTime) / 1000 : 0;
+                    observer.next({
+                        frameStartTime,
+                        deltaTime
+                    });
+                })
+            }).pipe(
+                map(clampTo30FPS)
+            )
+        };
+
+        this.frames = of(undefined)
+            .pipe(
+                expand((val) => calculateStep(val)),
+                // Expand emits the first value provided to it, and in this
+                //  case we just want to ignore the undefined input frame
+                filter(frame => frame !== undefined),
+                map((frame: Tick) => frame.deltaTime),
+                share()
+            )
     }
 
     public getState() {
-        return this.state.pipe(
-            map(state => Object.assign({}, state))
-        );
+        return this.state;
     }
  
     public addSystem(system: System) {
         this.systems.push(system);
         system.onAttach(this);
-    }
-
-    public update(delta: number) {
-        this.tick.next({
-            delta: delta,
-        });
     }
 
     public addGameObject(gameObject: GameObject) {
