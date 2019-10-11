@@ -13,11 +13,7 @@ export interface Position {
 }
 
 export function createPoint(x: number = 0, y: number = 0, z: number = 0): Point3D {
-    return {x: 0, y: 0, z: 0};
-}
-
-export function derp(): Point3D {
-    return {};
+    return {x: x, y: y, z: z};
 }
 
 export function createPositionComponent(gameObjectId: string, point?: Point3D): Component<Position> {

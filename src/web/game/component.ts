@@ -1,6 +1,7 @@
 export enum ComponentType {
     POSITION = 'POSITION',
     SPRITE = 'SPRITE',
+    MOVEMENT_CONTROLS = 'MOVEMENT_CONTROLS',
 }
 
 export interface Component<T> {

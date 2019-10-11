@@ -10,13 +10,12 @@ export class KeyInput {
         window.addEventListener('keyup', this.keyupListener.bind(this), false);
 
         this.keys = {};
-        // this.nextKeys = {};
     }
 
     public update() {
-        // this.keys = this.nextKeys;
-        // this.nextKeys = {};
-        console.log(this.keys);
+        if (Object.keys(this.keys).length) {
+            console.log(this.keys);
+        }
     }
 
     public isKeyPressed(value: string) {

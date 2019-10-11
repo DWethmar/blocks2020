@@ -5,6 +5,7 @@ import { System } from './system';
 import { KeyUtil } from './key-utl';
 import { Position } from './point-3d';
 import { KeyInput } from './key-input';
+import { MovementControls } from './movement-controls';
 
 export class InputSystem implements System {
     
@@ -20,10 +21,15 @@ export class InputSystem implements System {
 
     update(engine: Engine, deltaTime: number) {
 
-        const maxSpeed = 2;
-        const speed = .2;
 
-        engine.getComponentsByType(ComponentType.POSITION).forEach((component: Component<Position>) => {
+
+        engine.getComponentsByType(ComponentType.MOVEMENT_CONTROLS).forEach((component: Component<MovementControls>) => {
+            const position: Component<Position> = engine.getComponent(component.gameObjectId, ComponentType.POSITION);
+            if (!position) {
+                return;
+            }
+            const maxSpeed  = component.state.maxSpeed;
+            const speed     = component.state.speed;
 
             const keyUp     = this.keyInput.isKeyPressed('w');
             const keyDown   = this.keyInput.isKeyPressed('s');
@@ -31,55 +37,55 @@ export class InputSystem implements System {
             const keyRight  = this.keyInput.isKeyPressed('d');
 
             if (keyUp && !keyDown) {
-                if (component.state.velocity.y < -maxSpeed) {
-                    component.state.velocity.y = -maxSpeed;
+                if (position.state.velocity.y < -maxSpeed) {
+                    position.state.velocity.y = -maxSpeed;
                 } else {
-                    component.state.velocity.y -= speed;
+                    position.state.velocity.y -= speed;
                 }
             } else {
-                if (component.state.velocity.y < 0) {
-                    component.state.velocity.y += speed;
+                if (position.state.velocity.y < 0) {
+                    position.state.velocity.y += speed;
                 }
             }
 
             if (keyDown && !keyUp) {
-                if (component.state.velocity.y > maxSpeed) {
-                    component.state.velocity.y = maxSpeed;
+                if (position.state.velocity.y > maxSpeed) {
+                    position.state.velocity.y = maxSpeed;
                 } else {
-                    component.state.velocity.y += speed;
+                    position.state.velocity.y += speed;
                 }
             } else {
-                if (component.state.velocity.y > 0) {
-                    component.state.velocity.y -= speed;
+                if (position.state.velocity.y > 0) {
+                    position.state.velocity.y -= speed;
                 }
             }
 
             if (keyLeft && !keyRight) {
-                if (component.state.velocity.x < -maxSpeed) {
-                    component.state.velocity.x = -maxSpeed;
+                if (position.state.velocity.x < -maxSpeed) {
+                    position.state.velocity.x = -maxSpeed;
                 } else {
-                    component.state.velocity.x -= speed;
+                    position.state.velocity.x -= speed;
                 }
             } else {
-                if (component.state.velocity.x < 0) {
-                    component.state.velocity.x += speed;
+                if (position.state.velocity.x < 0) {
+                    position.state.velocity.x += speed;
                 }
             }
 
             if (keyRight && !keyLeft) {
-                if (component.state.velocity.x > maxSpeed) {
-                    component.state.velocity.x = maxSpeed;
+                if (position.state.velocity.x > maxSpeed) {
+                    position.state.velocity.x = maxSpeed;
                 } else {
-                    component.state.velocity.x += speed;
+                    position.state.velocity.x += speed;
                 }
             } else {
-                if (component.state.velocity.x > 0) {
-                    component.state.velocity.x -= speed;
+                if (position.state.velocity.x > 0) {
+                    position.state.velocity.x -= speed;
                 }
             }
 
-            component.state.velocity.y = Math.round(component.state.velocity.y * 1000) / 1000
-            component.state.velocity.x = Math.round(component.state.velocity.x * 1000) / 1000
+            position.state.velocity.y = Math.round(position.state.velocity.y * 1000) / 1000
+            position.state.velocity.x = Math.round(position.state.velocity.x * 1000) / 1000
 
             engine.updateComponent(component);
         });

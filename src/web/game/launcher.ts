@@ -2,7 +2,8 @@ import { Game } from './game';
 import { createGameObject } from './game-object';
 import { createPositionComponent, createPoint } from './point-3d';
 import { createSpriteComponent } from './sprite';
-import { distinctUntilChanged, throttleTime } from 'rxjs/operators';
+import { throttleTime } from 'rxjs/operators';
+import { createMovementControlsComponent } from './movement-controls';
 
 const game = new Game(document.body);
 
@@ -12,16 +13,19 @@ game.engine.addComponent(
     createPositionComponent(gameObject.id, null)
 );
 game.engine.addComponent(
+    createMovementControlsComponent(gameObject.id)
+);
+game.engine.addComponent(
     createSpriteComponent(gameObject.id, 'colored_transparent-30.png', 16, 16)
 );
 
-const gameObject2 = createGameObject('player2');
-game.engine.addGameObject(gameObject2);
+const tree = createGameObject('tree');
+game.engine.addGameObject(tree);
 game.engine.addComponent(
-    createPositionComponent(gameObject2.id, createPoint(20, 20))
+    createPositionComponent(tree.id, createPoint(20, 20))
 );
 game.engine.addComponent(
-    createSpriteComponent(gameObject2.id, 'colored_transparent-30.png', 16, 16)
+    createSpriteComponent(tree.id, 'colored_transparent-31.png', 16, 16)
 );
 
 // DEBUG

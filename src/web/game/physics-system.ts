@@ -25,12 +25,10 @@ export class PhysicsSystem implements System {
     }
 
     update(engine: Engine, deltaTime: number) {
-
         engine.getComponentsByType(ComponentType.POSITION).forEach((component: Component<Position>) => {
             component.state.position.x += component.state.velocity.x * deltaTime;
             component.state.position.y += component.state.velocity.y * deltaTime;
             engine.updateComponent(component);
         });
-
     }
 }
