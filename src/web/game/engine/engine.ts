@@ -3,7 +3,7 @@ import { take, map, tap, mergeMap, scan, share, expand, filter } from 'rxjs/oper
 
 import { GameState, initState } from './game-state';
 import { GameObject } from './game-object';
-import { System } from './system';
+import { System } from '../system';
 import { Component, ComponentType } from './component';
 
 export class Engine {

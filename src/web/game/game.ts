@@ -1,11 +1,11 @@
 import * as PIXI from 'pixi.js'
-import { Engine } from './engine';
-import { Events } from './events';
-import { RenderSystem } from './render-system';
+import { Engine } from './engine/engine';
+import { Events } from './engine/events';
+import { RenderSystem } from './render/render-system';
 import { TestSystem } from './test-system';
-import { InputSystem } from './input-system';
-import { PhysicsSystem } from './physics-system';
-import { KeyInput } from './key-input';
+import { InputSystem } from './input/input-system';
+import { PhysicsSystem } from './physics/physics-system';
+import { KeyInput } from './input/key-input';
 
 export class Game {
     
@@ -31,6 +31,7 @@ export class Game {
         this.engine.addSystem(new PhysicsSystem(this.events));
 
         app.ticker.add((delta: number) => {
+            app.stage.sortChildren();
             this.engine.update(delta);
             this.keyInput.update();
         });

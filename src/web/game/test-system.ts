@@ -1,6 +1,6 @@
 import { System } from './system';
-import { Events } from './events';
-import { Engine } from './engine';
+import { Events } from './engine/events';
+import { Engine } from './engine/engine';
 
 export class TestSystem implements System {
 

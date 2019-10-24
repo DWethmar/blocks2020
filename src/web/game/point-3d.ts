@@ -1,4 +1,4 @@
-import { Component, ComponentType } from './component';
+import { Component, ComponentType } from './engine/component';
 import { createUniqueId } from './id';
 
 export interface Point3D {

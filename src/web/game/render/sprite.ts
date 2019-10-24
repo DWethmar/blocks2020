@@ -1,6 +1,6 @@
-import { Component, ComponentType } from './component';
-import { createUniqueId } from './id';
-import { Point3D } from './point-3d';
+import { Component, ComponentType } from '../engine/component';
+import { createUniqueId } from '../id';
+import { Point3D } from '../point-3d';
 
 export interface Sprite {
     name: string;

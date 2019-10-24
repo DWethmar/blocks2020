@@ -1,11 +1,11 @@
 import * as PIXI from 'pixi.js'
-import { Engine } from './engine';
-import { ComponentType, Component } from './component';
-import { System } from './system';
+import { Engine } from '../engine/engine';
+import { ComponentType, Component } from '../engine/component';
+import { System } from '../system';
 import { KeyUtil } from './key-utl';
-import { Position } from './point-3d';
+import { Position } from '../point-3d';
 import { KeyInput } from './key-input';
-import { MovementControls } from './movement-controls';
+import { MovementControls } from '../movement-controls';
 
 export class InputSystem implements System {
     

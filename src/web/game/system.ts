@@ -1,4 +1,4 @@
-import { Engine } from './engine';
+import { Engine } from './engine/engine';
 
 export interface System {
     onAttach(engine: Engine);

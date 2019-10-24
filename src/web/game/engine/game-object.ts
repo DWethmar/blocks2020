@@ -1,4 +1,4 @@
-import { createUniqueId } from './id';
+import { createUniqueId } from '../id';
 
 export interface GameObject {
     id: string;

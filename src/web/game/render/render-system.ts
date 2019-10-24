@@ -1,13 +1,12 @@
 import * as PIXI from 'pixi.js'
-import { Engine } from './engine';
-import { withLatestFrom, take } from 'rxjs/operators';
-import { ComponentType, Component } from './component';
-import { System } from './system';
+import { Engine } from '../engine/engine';
+import { ComponentType, Component } from '../engine/component';
+import { System } from '../system';
 import { Sprite } from './sprite';
+import { addPoints } from '../point-3d';
 
-import data from '../assets/sprites-colored/spritesheet.json';
-import image from '../assets/sprites-colored/spritesheet.png';
-import { createPoint, addPoints } from './point-3d';
+import data from '../../assets/sprites-colored/spritesheet.json';
+import image from '../../assets/sprites-colored/spritesheet.png';
 
 export class RenderSystem implements System {
     
