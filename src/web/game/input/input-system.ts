@@ -1,14 +1,12 @@
-import * as PIXI from 'pixi.js'
 import { Engine } from '../engine/engine';
 import { ComponentType, Component } from '../engine/component';
 import { System } from '../system';
-import { KeyUtil } from './key-utl';
 import { Position } from '../point-3d';
 import { KeyInput } from './key-input';
 import { MovementControls } from '../movement-controls';
 
 export class InputSystem implements System {
-    
+
     private keyInput: KeyInput;
 
     constructor(keyInput: KeyInput) {
@@ -20,21 +18,18 @@ export class InputSystem implements System {
     }
 
     update(engine: Engine, deltaTime: number) {
-
-
-
         engine.getComponentsByType(ComponentType.MOVEMENT_CONTROLS).forEach((component: Component<MovementControls>) => {
             const position: Component<Position> = engine.getComponent(component.gameObjectId, ComponentType.POSITION);
             if (!position) {
                 return;
             }
-            const maxSpeed  = component.state.maxSpeed;
-            const speed     = component.state.speed;
+            const maxSpeed = component.state.maxSpeed;
+            const speed = component.state.speed;
 
-            const keyUp     = this.keyInput.isKeyPressed('w');
-            const keyDown   = this.keyInput.isKeyPressed('s');
-            const keyLeft   = this.keyInput.isKeyPressed('a');
-            const keyRight  = this.keyInput.isKeyPressed('d');
+            const keyUp = this.keyInput.isKeyPressed('w');
+            const keyDown = this.keyInput.isKeyPressed('s');
+            const keyLeft = this.keyInput.isKeyPressed('a');
+            const keyRight = this.keyInput.isKeyPressed('d');
 
             if (keyUp && !keyDown) {
                 if (position.state.velocity.y < -maxSpeed) {

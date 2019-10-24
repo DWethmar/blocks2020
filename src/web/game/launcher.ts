@@ -12,7 +12,7 @@ gameObjectCreator(createWallPrefab(createPoint(50, 50)));
 gameObjectCreator(createTreePrefab(createPoint(100, 100)));
 
 // DEBUG
-const list: HTMLUListElement = document.createElement("ul"); 
+const list: HTMLUListElement = document.createElement("ul");
 list.classList.add('game-objects');
 list.style.cssFloat = 'right';
 
@@ -28,8 +28,8 @@ game.engine.onChange()
         Object.values(state.gameObjects).forEach(gameObject => {
             const li = document.createElement('li');
             li.innerHTML = `<span title="${gameObject.id}">${gameObject.name}</span>`;
-            
-            const componentList: HTMLUListElement = document.createElement("ul"); 
+
+            const componentList: HTMLUListElement = document.createElement("ul");
             componentList.classList.add('components');
             if (state.componentIdByGameObject.hasOwnProperty(gameObject.id)) {
                 for (let [type, componentId] of Object.entries(state.componentIdByGameObject[gameObject.id])) {
@@ -44,6 +44,6 @@ game.engine.onChange()
             li.appendChild(componentList);
             list.appendChild(li);
         });
-});
+    });
 
 document.body.appendChild(list);

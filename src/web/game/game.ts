@@ -8,10 +8,10 @@ import { PhysicsSystem } from './physics/physics-system';
 import { KeyInput } from './input/key-input';
 
 export class Game {
-    
+
     public engine: Engine;
     public events: Events;
-    
+
     private keyInput: KeyInput;
 
     constructor(container: HTMLElement) {

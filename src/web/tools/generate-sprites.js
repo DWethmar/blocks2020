@@ -9,7 +9,7 @@ spritesheet(
         path: __dirname + '/assets/spritesheets',
         name: 'tiles-spritesheet',
     },
-    function(err) {
+    function (err) {
         if (err) {
             throw err;
         }

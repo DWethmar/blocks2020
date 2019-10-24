@@ -12,7 +12,7 @@ export class TestSystem implements System {
     }
 
     onAttach(engine: Engine) { }
-    
+
     update(engine: Engine, deltaTime: number) {
 
     }
