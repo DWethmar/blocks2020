@@ -10,11 +10,18 @@
         gtag('js', new Date());
         gtag('config', 'UA-45541775-5');
     </script>
+    <link rel="stylesheet" type="text/css" href="style/style.scss">
 </head>
 
 <body>
     <p>WASD movement</p>
-    <script src="./game/launcher.ts"></script>
+
+    <div class="game">
+        <div id="game-view" class="game__view"></div>
+        <div id="game-inspector" class="game__inspector"></div>
+    </div>
+
+    <script src="./launcher.tsx"></script>
 </body>
 
 </html>

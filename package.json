@@ -12,11 +12,13 @@
   "author": "",
   "license": "ISC",
   "devDependencies": {
+    "@types/react": "^16.9.11",
+    "@types/react-dom": "^16.9.4",
     "@types/uuid": "^3.4.5",
     "eslint": "^6.5.1",
     "eslint-config-prettier": "^6.4.0",
     "eslint-plugin-prettier": "^3.1.1",
-    "parcel-bundler": "^1.12.3",
+    "parcel-bundler": "^1.12.4",
     "prettier": "^1.18.2",
     "sass": "^1.23.0",
     "typescript": "^3.7.0"
@@ -24,6 +26,8 @@
   "dependencies": {
     "@reactivex/rxjs": "^6.5.3",
     "pixi.js": "^5.1.5",
+    "react": "^16.11.0",
+    "react-dom": "^16.11.0",
     "uuid": "^3.3.3"
   }
 }

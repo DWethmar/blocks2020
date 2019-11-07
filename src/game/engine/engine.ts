@@ -30,7 +30,7 @@ export class Engine {
     public onChange(): Observable<GameState> {
         return this.change;
     }
- 
+
     public addSystem(system: System) {
         this.systems.push(system);
         system.onAttach(this);
@@ -73,6 +73,19 @@ export class Engine {
             return Object.assign({}, this.state.components[componentId]);
         }
         return null;
+    }
+
+    public getGameObjectAndComponents(gameObjectId: string): [GameObject, Component<any>[]] {
+        const components = [];
+        if (this.state.componentIdByGameObject.hasOwnProperty(gameObjectId)) {
+            components.push(
+                ...Object.values(this.state.componentIdByGameObject[gameObjectId]).map(id => this.state.components[id])
+            );
+        }
+        return [
+            this.state.gameObjects[gameObjectId],
+            components
+        ];
     }
 
     public getComponentsByType(type: ComponentType): Component<any>[] {

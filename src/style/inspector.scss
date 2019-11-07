@@ -1,0 +1,31 @@
+.inspector {
+    display: flex;
+
+    &__game-objects{
+        width: 265px;
+        background: red;
+    }
+
+    &__selected {
+        width: 100%;
+        background: green;
+        padding: 10px;
+    }
+}
+
+.game-objects-list {
+    padding: 0;
+    margin: 0;
+    list-style-type: none;
+
+    &__item {
+        button{
+            width: 100%;
+            text-align: left;
+
+            &.selected {
+                font-weight: bold;
+            }
+        }
+    }
+}

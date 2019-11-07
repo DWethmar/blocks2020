@@ -1,0 +1,15 @@
+@import 'inspector';
+
+.game {
+    display: flex;
+
+    &__view {
+        width: 25%;
+        background-color: azure;
+    }
+
+    &__inspector {
+        width: 75%;
+        background-color: beige;
+    }
+}
