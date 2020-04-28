@@ -1,12 +1,14 @@
 import { KeyUtil } from './key-utl';
 
 export class KeyInput {
-
     private keys: { [code: string]: string } = {};
-    // private nextKeys: { [code: string]: string } = {};
 
     constructor() {
-        window.addEventListener('keydown', this.keydownListener.bind(this), false);
+        window.addEventListener(
+            'keydown',
+            this.keydownListener.bind(this),
+            false
+        );
         window.addEventListener('keyup', this.keyupListener.bind(this), false);
 
         this.keys = {};

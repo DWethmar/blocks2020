@@ -6,14 +6,16 @@ export interface MovementControls {
     speed: number;
 }
 
-export function createMovementControlsComponent(gameObjectId: string): Component<MovementControls> {
+export function createMovementControlsComponent(
+    gameObjectId: string
+): Component<MovementControls> {
     return {
         id: createUniqueId(),
         gameObjectId: gameObjectId,
         type: ComponentType.MOVEMENT_CONTROLS,
         state: {
             maxSpeed: 2,
-            speed: .2
+            speed: 0.2
         }
     };
 }

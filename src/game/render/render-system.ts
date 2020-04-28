@@ -1,15 +1,13 @@
-import * as PIXI from 'pixi.js'
+import * as PIXI from 'pixi.js';
 import { Engine } from '../engine/engine';
-import { ComponentType, Component } from '../engine/component';
+import { ComponentType } from '../engine/component';
 import { System } from '../system';
-import { Sprite } from './sprite';
 import { addPoints } from '../point-3d';
 
-import data from '../../assets/sprites-colored/spritesheet.json';
-import image from '../../assets/sprites-colored/spritesheet.png';
+const data = require('../../assets/sprites-colored/spritesheet.json');
+const image = require('../../assets/sprites-colored/spritesheet.png');
 
 export class RenderSystem implements System {
-    
     private stage: PIXI.Container;
     public spritesheet: PIXI.Spritesheet;
 
@@ -29,31 +27,43 @@ export class RenderSystem implements System {
     }
 
     update(engine: Engine, deltaTime: number) {
-        engine.getComponentsByType(ComponentType.SPRITE).forEach((component: Component<Sprite>) => {
+        for (const c of engine.getComponentsByType(ComponentType.SPRITE)) {
+            let position = engine.getComponent(
+                c.gameObjectId,
+                ComponentType.POSITION
+            );
 
-            let position = engine.getComponent(component.gameObjectId, ComponentType.POSITION);
             if (!position) {
                 return;
             }
 
-            let sprite = this.stage.getChildByName(component.id) as PIXI.Sprite;
-            if (!sprite && this.spritesheet.textures.hasOwnProperty(component.state.name)) {
-                sprite = new PIXI.Sprite(this.spritesheet.textures[component.state.name]);
-                sprite.name = component.id;
+            let sprite = this.stage.getChildByName(c.id) as PIXI.Sprite;
 
-                sprite.width = component.state.width;
-                sprite.height = component.state.height;
+            if (
+                !sprite &&
+                this.spritesheet.textures.hasOwnProperty(c.state.name)
+            ) {
+                sprite = new PIXI.Sprite(
+                    this.spritesheet.textures[c.state.name]
+                );
+                sprite.name = c.id;
+
+                sprite.width = c.state.width;
+                sprite.height = c.state.height;
 
                 this.stage.addChild(sprite);
             }
 
-            const spritePos = addPoints(position.state.position, component.state.offSet);
+            const spritePos = addPoints(
+                position.state.position,
+                c.state.offSet
+            );
 
             sprite.position.x = spritePos.x;
             sprite.position.y = spritePos.y;
             sprite.zIndex = spritePos.y;
 
-            engine.updateComponent(component);
-        });
+            engine.updateComponent(c);
+        }
     }
 }

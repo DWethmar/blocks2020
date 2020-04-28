@@ -1,15 +1,20 @@
 @import 'inspector';
 
 .game {
-    display: flex;
+  display: flex;
 
-    &__view {
-        width: 25%;
-        background-color: azure;
-    }
+  &__view {
+    flex: 1;
+    background-color: azure;
 
-    &__inspector {
-        width: 75%;
-        background-color: beige;
+    canvas {
+      margin: 0 auto;
+      display: block;
     }
+  }
+
+  &__inspector {
+    flex: 1;
+    background-color: beige;
+  }
 }

@@ -3,7 +3,6 @@ import { Events } from './engine/events';
 import { Engine } from './engine/engine';
 
 export class TestSystem implements System {
-
     private events: Events;
 
     constructor(events: Events) {
@@ -11,9 +10,7 @@ export class TestSystem implements System {
         this.events = events;
     }
 
-    onAttach(engine: Engine) { }
+    onAttach(engine: Engine) {}
 
-    update(engine: Engine, deltaTime: number) {
-
-    }
+    update(engine: Engine, deltaTime: number) {}
 }

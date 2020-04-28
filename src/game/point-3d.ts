@@ -8,8 +8,8 @@ export interface Point3D {
 }
 
 export interface Position {
-    position: Point3D,
-    velocity: Point3D,
+    position: Point3D;
+    velocity: Point3D;
 }
 
 export function addPoints(a: Point3D, b: Point3D) {
@@ -17,21 +17,28 @@ export function addPoints(a: Point3D, b: Point3D) {
         x: a.x + b.x,
         y: a.y + b.y,
         z: a.z + a.z
-    }
+    };
 }
 
-export function createPoint(x: number = 0, y: number = 0, z: number = 0): Point3D {
+export function createPoint(
+    x: number = 0,
+    y: number = 0,
+    z: number = 0
+): Point3D {
     return { x: x, y: y, z: z };
 }
 
-export function createPositionComponent(gameObjectId: string, point?: Point3D): Component<Position> {
+export function createPositionComponent(
+    gameObjectId: string,
+    point?: Point3D
+): Component<Position> {
     return {
         id: createUniqueId(),
         gameObjectId: gameObjectId,
         type: ComponentType.POSITION,
         state: {
             position: point ? point : createPoint(),
-            velocity: createPoint(),
+            velocity: createPoint()
         }
     };
 }

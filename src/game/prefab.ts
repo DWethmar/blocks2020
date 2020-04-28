@@ -50,7 +50,6 @@ export function createWallPrefab(position: Point3D): Prefab {
     };
 }
 
-
 export function createTreePrefab(position: Point3D): Prefab {
     const wall = createGameObject('tree');
     return {
@@ -60,6 +59,23 @@ export function createTreePrefab(position: Point3D): Prefab {
             createSpriteComponent({
                 gameObjectId: wall.id,
                 spriteName: 'colored_transparent-31.png',
+                width: 16,
+                height: 16,
+                offSet: createPoint(-8, -16, 0)
+            })
+        ]
+    };
+}
+
+export function createGrassPrefab(position: Point3D): Prefab {
+    const grass = createGameObject('grass');
+    return {
+        gameObject: grass,
+        components: [
+            createPositionComponent(grass.id, position),
+            createSpriteComponent({
+                gameObjectId: grass.id,
+                spriteName: 'colored_transparent-4.png',
                 width: 16,
                 height: 16,
                 offSet: createPoint(-8, -16, 0)

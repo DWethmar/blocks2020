@@ -2,7 +2,6 @@ import { Subject, Observable } from 'rxjs';
 import { Action } from './action';
 
 export class Events {
-    
     private events: Subject<Action>;
 
     constructor() {

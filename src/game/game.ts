@@ -1,4 +1,4 @@
-import * as PIXI from 'pixi.js'
+import * as PIXI from 'pixi.js';
 import { Engine } from './engine/engine';
 import { Events } from './engine/events';
 import { RenderSystem } from './render/render-system';
@@ -8,7 +8,6 @@ import { PhysicsSystem } from './physics/physics-system';
 import { KeyInput } from './input/key-input';
 
 export class Game {
-
     public engine: Engine;
     public events: Events;
 
@@ -16,9 +15,10 @@ export class Game {
 
     constructor(container: HTMLElement) {
         const app = new PIXI.Application({
-            width: 200,
-            height: 200,
+            width: 400,
+            height: 400
         });
+
         container.appendChild(app.view);
 
         this.events = new Events();
