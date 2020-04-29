@@ -1,14 +1,14 @@
 import * as React from 'react';
-import { throttleTime, map, filter, debounceTime } from 'rxjs/operators';
+import { throttleTime } from 'rxjs/operators';
 
-import { Engine } from '../game/engine/engine';
-import { GameState } from '../game/engine/game-state';
-import { Component } from '../game/engine/component';
-import { GameObject } from '../game/engine/game-object';
-import { useEffect, useState } from 'react';
+import { useEffect, useState, useCallback } from 'react';
+import { GameEngine } from '../game/spec';
+import { GameState } from '../core/engine/game-state';
+import { GameObject } from '../core/engine/game-object';
+import { Component } from '../core/engine/component';
 
 export interface InspectorProps {
-    engine: Engine;
+    engine: GameEngine;
 }
 
 export const Inspector: React.FunctionComponent<InspectorProps> = ({
@@ -16,7 +16,7 @@ export const Inspector: React.FunctionComponent<InspectorProps> = ({
 }) => {
     const [gameState, setGameState] = useState<GameState>();
     const [selectedId, setSelectedId] = useState<string>();
-    const [selected, setSelected] = useState<[GameObject, Component<any>[]]>();
+    const [selected, setSelected] = useState<[GameObject, Component[]]>();
 
     useEffect(() => {
         const gameStateSubscription = engine
@@ -32,7 +32,7 @@ export const Inspector: React.FunctionComponent<InspectorProps> = ({
         if (!!selectedId) {
             setSelected(engine.getGameObjectAndComponents(selectedId));
         }
-    }, [gameState, selectedId]);
+    }, [selectedId, gameState]);
 
     return gameState ? (
         <div className="inspector">
