@@ -1,9 +1,11 @@
-import { Engine } from '../engine/engine';
-import { ComponentType, Component } from '../engine/component';
-import { System } from '../system';
-import { Position } from '../point-3d';
 import { KeyInput } from './key-input';
 import { MovementControls } from '../movement-controls';
+import { System } from '../../core/engine/system';
+import {
+    GameEngine,
+    MOVEMENT_CONTROLS_COMPONENT,
+    POSITION_COMPONENT
+} from '../spec';
 
 export class InputSystem implements System {
     private keyInput: KeyInput;
@@ -12,21 +14,23 @@ export class InputSystem implements System {
         this.keyInput = keyInput;
     }
 
-    onAttach(engine: Engine) {}
+    onAttach(engine: GameEngine) {}
 
-    update(engine: Engine, deltaTime: number) {
+    update(engine: GameEngine, deltaTime: number) {
         engine
-            .getComponentsByType(ComponentType.MOVEMENT_CONTROLS)
-            .forEach((component: Component<MovementControls>) => {
-                const position: Component<Position> = engine.getComponent(
+            .getComponentsByType(MOVEMENT_CONTROLS_COMPONENT)
+            .forEach((component: MovementControls) => {
+                const p = engine.getComponent(
                     component.gameObjectId,
-                    ComponentType.POSITION
+                    POSITION_COMPONENT
                 );
-                if (!position) {
+
+                if (!p) {
                     return;
                 }
-                const maxSpeed = component.state.maxSpeed;
-                const speed = component.state.speed;
+
+                const maxSpeed = component.data.maxSpeed;
+                const speed = component.data.speed;
 
                 const keyUp = this.keyInput.isKeyPressed('w');
                 const keyDown = this.keyInput.isKeyPressed('s');
@@ -34,57 +38,55 @@ export class InputSystem implements System {
                 const keyRight = this.keyInput.isKeyPressed('d');
 
                 if (keyUp && !keyDown) {
-                    if (position.state.velocity.y < -maxSpeed) {
-                        position.state.velocity.y = -maxSpeed;
+                    if (p.data.velocity.y < -maxSpeed) {
+                        p.data.velocity.y = -maxSpeed;
                     } else {
-                        position.state.velocity.y -= speed;
+                        p.data.velocity.y -= speed;
                     }
                 } else {
-                    if (position.state.velocity.y < 0) {
-                        position.state.velocity.y += speed;
+                    if (p.data.velocity.y < 0) {
+                        p.data.velocity.y += speed;
                     }
                 }
 
                 if (keyDown && !keyUp) {
-                    if (position.state.velocity.y > maxSpeed) {
-                        position.state.velocity.y = maxSpeed;
+                    if (p.data.velocity.y > maxSpeed) {
+                        p.data.velocity.y = maxSpeed;
                     } else {
-                        position.state.velocity.y += speed;
+                        p.data.velocity.y += speed;
                     }
                 } else {
-                    if (position.state.velocity.y > 0) {
-                        position.state.velocity.y -= speed;
+                    if (p.data.velocity.y > 0) {
+                        p.data.velocity.y -= speed;
                     }
                 }
 
                 if (keyLeft && !keyRight) {
-                    if (position.state.velocity.x < -maxSpeed) {
-                        position.state.velocity.x = -maxSpeed;
+                    if (p.data.velocity.x < -maxSpeed) {
+                        p.data.velocity.x = -maxSpeed;
                     } else {
-                        position.state.velocity.x -= speed;
+                        p.data.velocity.x -= speed;
                     }
                 } else {
-                    if (position.state.velocity.x < 0) {
-                        position.state.velocity.x += speed;
+                    if (p.data.velocity.x < 0) {
+                        p.data.velocity.x += speed;
                     }
                 }
 
                 if (keyRight && !keyLeft) {
-                    if (position.state.velocity.x > maxSpeed) {
-                        position.state.velocity.x = maxSpeed;
+                    if (p.data.velocity.x > maxSpeed) {
+                        p.data.velocity.x = maxSpeed;
                     } else {
-                        position.state.velocity.x += speed;
+                        p.data.velocity.x += speed;
                     }
                 } else {
-                    if (position.state.velocity.x > 0) {
-                        position.state.velocity.x -= speed;
+                    if (p.data.velocity.x > 0) {
+                        p.data.velocity.x -= speed;
                     }
                 }
 
-                position.state.velocity.y =
-                    Math.round(position.state.velocity.y * 1000) / 1000;
-                position.state.velocity.x =
-                    Math.round(position.state.velocity.x * 1000) / 1000;
+                p.data.velocity.y = Math.round(p.data.velocity.y * 1000) / 1000;
+                p.data.velocity.x = Math.round(p.data.velocity.x * 1000) / 1000;
 
                 engine.updateComponent(component);
             });

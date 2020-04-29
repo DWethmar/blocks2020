@@ -1,34 +1,37 @@
-import { Component, ComponentType } from '../engine/component';
-import { createUniqueId } from '../id';
-import { Point3D } from '../point-3d';
+import { Component } from '../../core/engine/component';
+import { createUniqueId } from '../../core/id';
+import { Point3D } from '../../core/point-3d';
+import { SPRITE_COMPONENT } from '../spec';
 
-export interface Sprite {
-    name: string;
-    width: number;
-    height: number;
-    offSet: Point3D
+export interface Sprite extends Component {
+    data: {
+        name: string;
+        width: number;
+        height: number;
+        offSet: Point3D;
+    };
 }
 
 export interface createSpriteComponentConfig {
-    gameObjectId: string,
-    spriteName: string,
-    width: number,
-    height: number,
-    offSet: Point3D
+    gameObjectId: string;
+    spriteName: string;
+    width: number;
+    height: number;
+    offSet: Point3D;
 }
 
 export function createSpriteComponent(
     config: createSpriteComponentConfig
-): Component<Sprite> {
+): Sprite {
     return {
         id: createUniqueId(),
         gameObjectId: config.gameObjectId,
-        type: ComponentType.SPRITE,
-        state: {
-            name:       config.spriteName,
-            width:      config.width,
-            height:     config.height,
-            offSet:     config.offSet
+        type: SPRITE_COMPONENT,
+        data: {
+            name: config.spriteName,
+            width: config.width,
+            height: config.height,
+            offSet: config.offSet
         }
     };
 }

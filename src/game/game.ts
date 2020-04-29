@@ -1,6 +1,6 @@
 import * as PIXI from 'pixi.js';
-import { Engine } from './engine/engine';
-import { Events } from './engine/events';
+import { Engine } from '../core/engine/engine';
+import { Events } from '../core/engine/events';
 import { RenderSystem } from './render/render-system';
 import { TestSystem } from './test-system';
 import { InputSystem } from './input/input-system';

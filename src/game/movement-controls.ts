@@ -1,19 +1,22 @@
-import { Component, ComponentType } from './engine/component';
-import { createUniqueId } from './id';
+import { Component } from '../core/engine/component';
+import { createUniqueId } from '../core/id';
+import { MOVEMENT_CONTROLS_COMPONENT } from './spec';
 
-export interface MovementControls {
-    maxSpeed: number;
-    speed: number;
+export interface MovementControls extends Component {
+    data: {
+        maxSpeed: number;
+        speed: number;
+    };
 }
 
 export function createMovementControlsComponent(
     gameObjectId: string
-): Component<MovementControls> {
+): MovementControls {
     return {
         id: createUniqueId(),
         gameObjectId: gameObjectId,
-        type: ComponentType.MOVEMENT_CONTROLS,
-        state: {
+        type: MOVEMENT_CONTROLS_COMPONENT,
+        data: {
             maxSpeed: 2,
             speed: 0.2
         }

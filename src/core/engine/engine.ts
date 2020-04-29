@@ -2,10 +2,12 @@ import { BehaviorSubject, Observable, Subject } from 'rxjs';
 
 import { GameState, initState } from './game-state';
 import { GameObject } from './game-object';
-import { System } from '../system';
-import { Component, ComponentType } from './component';
+import { System } from './system';
+import { Component } from './component';
 
-export class Engine {
+export type EngineSpec = Record<string, Component>;
+
+export class Engine<T extends EngineSpec> {
     private state: GameState;
     private systems: System[];
     private change: Subject<GameState>;
@@ -29,7 +31,7 @@ export class Engine {
         return this.change;
     }
 
-    public setChanged() {
+    private setChanged() {
         this.change.next(this.state);
     }
 
@@ -43,7 +45,7 @@ export class Engine {
         this.setChanged();
     }
 
-    public addComponent(component: Component<any>) {
+    public addComponent(component: Component) {
         this.state.components[component.id] = component;
 
         // Cache component types
@@ -68,15 +70,15 @@ export class Engine {
         this.setChanged();
     }
 
-    public updateComponent<T>(component: Component<T>) {
+    public updateComponent(component: Component) {
         this.state.components[component.id] = component;
         this.setChanged();
     }
 
-    public getComponent(
+    public getComponent<K extends keyof T>(
         gameObjectId: string,
-        type: ComponentType
-    ): Component<any> {
+        type: K
+    ): T[K] | null {
         if (
             this.state.componentIdByGameObject.hasOwnProperty(gameObjectId) &&
             this.state.componentIdByGameObject[gameObjectId].hasOwnProperty(
@@ -85,31 +87,37 @@ export class Engine {
         ) {
             const componentId = this.state.componentIdByGameObject[
                 gameObjectId
-            ][type];
-            return Object.assign({}, this.state.components[componentId]);
+            ][type as string];
+
+            return Object.assign(
+                {},
+                this.state.components[componentId]
+            ) as T[K];
         }
         return null;
     }
 
     public getGameObjectAndComponents(
         gameObjectId: string
-    ): [GameObject, Component<any>[]] {
+    ): [GameObject, Component[]] {
         const components = [];
+
         if (this.state.componentIdByGameObject.hasOwnProperty(gameObjectId)) {
             components.push(
                 ...Object.values(
                     this.state.componentIdByGameObject[gameObjectId]
-                ).map(id => this.state.components[id])
+                ).map((id: string) => this.state.components[id])
             );
         }
+
         return [this.state.gameObjects[gameObjectId], components];
     }
 
-    public getComponentsByType(type: ComponentType): Component<any>[] {
+    public getComponentsByType<K extends keyof T>(type: K): T[K][] {
         if (this.state.componentIdsByType.hasOwnProperty(type)) {
-            return this.state.componentIdsByType[type].map(id =>
-                Object.assign({}, this.state.components[id])
-            );
+            return this.state.componentIdsByType[
+                type as string
+            ].map((id: string) => Object.assign({}, this.state.components[id]));
         }
         return [];
     }

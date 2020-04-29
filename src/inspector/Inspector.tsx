@@ -29,18 +29,10 @@ export const Inspector: React.FunctionComponent<InspectorProps> = ({
     });
 
     useEffect(() => {
-        const gameObjectSubscription = engine
-            .onChange()
-            .pipe(
-                debounceTime(1500),
-                // filter(() => !!selectedId),
-                map(() => engine.getGameObjectAndComponents(selectedId))
-            )
-            .subscribe(([gameObject, Components]) => {
-                setSelected([gameObject, Components]);
-            });
-        return () => gameObjectSubscription.unsubscribe();
-    });
+        if (!!selectedId) {
+            setSelected(engine.getGameObjectAndComponents(selectedId));
+        }
+    }, [gameState, selectedId]);
 
     return gameState ? (
         <div className="inspector">

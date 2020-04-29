@@ -1,7 +1,6 @@
-import { System } from '../system';
-import { Events } from '../engine/events';
-import { Engine } from '../engine/engine';
-import { ComponentType } from '../engine/component';
+import { Events } from '../../core/engine/events';
+import { GameEngine, POSITION_COMPONENT } from '../spec';
+import { System } from '../../core/engine/system';
 
 // https://impactjs.com/forums/code/top-down-rpg-style-tile-based-grid-movement
 // https://gamedev.stackexchange.com/questions/50074/how-to-create-simple-acceleration-in-a-2d-sprite?noredirect=1&lq=1
@@ -18,12 +17,12 @@ export class PhysicsSystem implements System {
         this.events = events;
     }
 
-    onAttach(engine: Engine) {}
+    onAttach(engine: GameEngine) {}
 
-    update(engine: Engine, deltaTime: number) {
-        for (const c of engine.getComponentsByType(ComponentType.POSITION)) {
-            c.state.position.x += c.state.velocity.x * deltaTime;
-            c.state.position.y += c.state.velocity.y * deltaTime;
+    update(engine: GameEngine, deltaTime: number) {
+        for (const c of engine.getComponentsByType(POSITION_COMPONENT)) {
+            c.data.position.x += c.data.velocity.x * deltaTime;
+            c.data.position.y += c.data.velocity.y * deltaTime;
             engine.updateComponent(c);
         }
     }

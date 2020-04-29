@@ -1,16 +1,17 @@
-import { Engine } from './engine/engine';
-import { createGameObject, GameObject } from './engine/game-object';
-import { createPositionComponent, createPoint, Point3D } from './point-3d';
+import { createGameObject, GameObject } from '../core/engine/game-object';
+import { Point3D } from '../core/point-3d';
 import { createSpriteComponent } from './render/sprite';
-import { Component } from './engine/component';
+import { Component } from '../core/engine/component';
 import { createMovementControlsComponent } from './movement-controls';
+import { GameEngine } from './spec';
+import { createPositionComponent, createPoint } from './position';
 
 export interface Prefab {
     gameObject: GameObject;
-    components: Component<any>[];
+    components: Component[];
 }
 
-export const createFromPrefab = (engine: Engine) => (prefab: Prefab) => {
+export const createFromPrefab = (engine: GameEngine) => (prefab: Prefab) => {
     engine.addGameObject(prefab.gameObject);
     prefab.components.forEach(component => engine.addComponent(component));
 };

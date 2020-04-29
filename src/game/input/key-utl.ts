@@ -31,7 +31,7 @@ export class KeyUtil {
         }
     }
 
-    private static keyNames = {
+    private static keyNames: Record<string, number> = {
         '0': 48,
         '1': 49,
         '2': 50,
@@ -133,7 +133,7 @@ export class KeyUtil {
         single_quote: 222
     };
 
-    private static keyCodes = {
+    private static keyCodes: Record<string, string> = {
         '8': 'backspace',
         '9': 'tab',
         '13': 'enter',

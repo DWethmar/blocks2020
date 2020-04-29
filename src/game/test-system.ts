@@ -1,6 +1,6 @@
-import { System } from './system';
-import { Events } from './engine/events';
-import { Engine } from './engine/engine';
+import { System } from '../core/engine/system';
+import { Events } from '../core/engine/events';
+import { Engine } from '../core/engine/engine';
 
 export class TestSystem implements System {
     private events: Events;
