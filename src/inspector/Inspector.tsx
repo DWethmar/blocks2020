@@ -1,7 +1,7 @@
 import * as React from 'react';
 import { throttleTime, tap } from 'rxjs/operators';
 
-import { useEffect, useState } from 'react';
+import { useEffect, useState, useMemo } from 'react';
 import { GameEngine } from '../game/game_engine';
 import { State } from '../core/state';
 
@@ -12,19 +12,19 @@ export interface InspectorProps {
 export const Inspector: React.FunctionComponent<InspectorProps> = ({
     engine,
 }) => {
+    const onChange = useMemo(() => engine.onChange(), []);
     const [gameState, setGameState] = useState<State>();
     const [selectedId, setSelectedId] = useState<string>();
 
     useEffect(() => {
         const gameStateSubscription = engine
             .onChange()
-            .pipe(throttleTime(1500))
+            .pipe(throttleTime(100))
             .subscribe((state: State) => {
-                console.log(':D');
-                setGameState(state);
+                setGameState(Object.assign({}, state));
             });
         return () => gameStateSubscription.unsubscribe();
-    }, []);
+    }, [onChange]);
 
     let selected = null;
     if (!!selectedId) {
@@ -38,7 +38,6 @@ export const Inspector: React.FunctionComponent<InspectorProps> = ({
                 <div>
                     components: {Object.keys(gameState.components).length}
                 </div>
-                <div>{Date().toLocaleString()}</div>
                 <ul className="game-objects-list">
                     {Object.values(gameState.gameObjects).map(
                         (gameObject, index) => (
