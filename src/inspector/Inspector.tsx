@@ -44,11 +44,11 @@ export const Inspector: React.FunctionComponent<InspectorProps> = ({
                             <li className="game-objects-list__item" key={index}>
                                 <button
                                     className={
-                                        gameObject.id === selectedId
+                                        gameObject.ID === selectedId
                                             ? 'selected'
                                             : ''
                                     }
-                                    onClick={() => setSelectedId(gameObject.id)}
+                                    onClick={() => setSelectedId(gameObject.ID)}
                                 >
                                     {gameObject.name}
                                 </button>

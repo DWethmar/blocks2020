@@ -19,7 +19,7 @@ export class InputSystem implements System {
         for (const c of engine.getComponentsByType(
             MOVEMENT_CONTROLS_COMPONENT
         )) {
-            const p = engine.getComponent(c.gameObjectId, POSITION_COMPONENT);
+            const p = engine.getComponent(c.gameObjectID, POSITION_COMPONENT);
 
             if (!p) {
                 return;
@@ -84,7 +84,7 @@ export class InputSystem implements System {
             p.data.velocity.y = Math.round(p.data.velocity.y * 1000) / 1000;
             p.data.velocity.x = Math.round(p.data.velocity.x * 1000) / 1000;
 
-            engine.updateComponent(c.id, c.data);
+            engine.updateComponent(c.ID, c.data);
         }
     }
 }

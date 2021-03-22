@@ -23,7 +23,7 @@ export class PhysicsSystem implements System {
         for (const c of engine.getComponentsByType(POSITION_COMPONENT)) {
             c.data.position.x += c.data.velocity.x * deltaTime;
             c.data.position.y += c.data.velocity.y * deltaTime;
-            engine.updateComponent(c.id, c.data);
+            engine.updateComponent(c.ID, c.data);
         }
     }
 }

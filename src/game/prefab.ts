@@ -19,20 +19,27 @@ export const createFromPrefab = (engine: GameEngine) => (prefab: Prefab) => {
     prefab.components.forEach((component) => engine.addComponent(component));
 };
 
-export function createPlayerPrefab(position: Point3D) {
+export function createPlayerPrefab(position: Point3D): Prefab {
     const player = createGameObject('player');
     return {
         gameObject: player,
         components: [
-            createPositionComponent(player.id, position),
-            createMovementControlsComponent(player.id),
+            createPositionComponent(player.ID, position),
+            createMovementControlsComponent(player.ID),
             createSpriteComponent({
-                gameObjectId: player.id,
+                gameObjectId: player.ID,
                 spriteName: 'colored_transparent-30.png',
                 width: 16,
                 height: 16,
                 offSet: createPoint(-8, -16, 0),
             }),
+            // createSpriteComponent({
+            //     gameObjectId: player.id,
+            //     spriteName: 'colored_transparent-751.png',
+            //     width: 16,
+            //     height: 16,
+            //     offSet: createPoint(-8, -32, 0),
+            // }),
         ],
     };
 }
@@ -42,9 +49,9 @@ export function createWallPrefab(position: Point3D): Prefab {
     return {
         gameObject: wall,
         components: [
-            createPositionComponent(wall.id, position),
+            createPositionComponent(wall.ID, position),
             createSpriteComponent({
-                gameObjectId: wall.id,
+                gameObjectId: wall.ID,
                 spriteName: 'colored_transparent-118.png',
                 width: 16,
                 height: 16,
@@ -59,9 +66,9 @@ export function createTreePrefab(position: Point3D): Prefab {
     return {
         gameObject: wall,
         components: [
-            createPositionComponent(wall.id, position),
+            createPositionComponent(wall.ID, position),
             createSpriteComponent({
-                gameObjectId: wall.id,
+                gameObjectId: wall.ID,
                 spriteName: 'colored_transparent-31.png',
                 width: 16,
                 height: 16,
@@ -76,9 +83,9 @@ export function createGrassPrefab(position: Point3D): Prefab {
     return {
         gameObject: grass,
         components: [
-            createPositionComponent(grass.id, position),
+            createPositionComponent(grass.ID, position),
             createSpriteComponent({
-                gameObjectId: grass.id,
+                gameObjectId: grass.ID,
                 spriteName: 'colored_transparent-4.png',
                 width: 16,
                 height: 16,

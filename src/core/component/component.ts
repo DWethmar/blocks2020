@@ -1,8 +1,8 @@
 export type ComponentData = unknown;
 
 export interface Component {
-    id: string;
-    gameObjectId: string;
+    ID: string;
+    gameObjectID: string;
     type: string;
     data: ComponentData;
 }
@@ -14,10 +14,10 @@ export type Components = {
 export const addComponent = (components: Components) => (
     c: Component
 ): void => {
-    if (!components[c.id]) {
-        components[c.id] = c;
+    if (!components[c.ID]) {
+        components[c.ID] = c;
     } else {
-        throw Error(`Game object with id ${c.id} already exists`);
+        throw Error(`Game object with id ${c.ID} already exists`);
     }
 };
 
@@ -41,10 +41,10 @@ export const deleteComponent = (components: Components) => (
 };
 
 export const updateComponent = (components: Components) => (
-    id: string,
+    ID: string,
     data: ComponentData
 ): boolean => {
-    const c = getComponent(components)(id);
+    const c = getComponent(components)(ID);
     if (c) {
         c.data = data;
         return true;

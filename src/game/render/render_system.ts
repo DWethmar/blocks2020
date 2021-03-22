@@ -51,7 +51,7 @@ export class RenderSystem implements System {
 
         for (const c of engine.getComponentsByType(SPRITE_COMPONENT)) {
             const position = engine.getComponent(
-                c.gameObjectId,
+                c.gameObjectID,
                 POSITION_COMPONENT
             );
 
@@ -59,7 +59,7 @@ export class RenderSystem implements System {
                 return;
             }
 
-            let sprite = getRendering(this.renderings)(c.id);
+            let sprite = getRendering(this.renderings)(c.ID);
 
             // create sprite if not exists.
             if (
@@ -70,7 +70,7 @@ export class RenderSystem implements System {
                     this.spritesheet.textures[c.data.name]
                 );
 
-                newSprite.name = c.id;
+                newSprite.name = c.ID;
 
                 newSprite.width = c.data.width;
                 newSprite.height = c.data.height;
@@ -78,7 +78,7 @@ export class RenderSystem implements System {
                 this.stage.addChild(newSprite);
                 sprite = newSprite;
 
-                addRendering(this.renderings)(c.id, sprite);
+                addRendering(this.renderings)(c.ID, sprite);
             }
 
             const spritePos = addPoints(position.data.position, c.data.offSet);
@@ -87,7 +87,7 @@ export class RenderSystem implements System {
             sprite.position.y = spritePos.y;
             sprite.zIndex = spritePos.y;
 
-            engine.updateComponent(c.id, c.data);
+            engine.updateComponent(c.ID, c.data);
         }
     }
 }

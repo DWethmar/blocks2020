@@ -13,8 +13,8 @@ export function createMovementControlsComponent(
     gameObjectId: string
 ): MovementControls {
     return {
-        id: createUniqueId(),
-        gameObjectId: gameObjectId,
+        ID: createUniqueId(),
+        gameObjectID: gameObjectId,
         type: MOVEMENT_CONTROLS_COMPONENT,
         data: {
             maxSpeed: 2,

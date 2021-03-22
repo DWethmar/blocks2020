@@ -24,8 +24,8 @@ export function createSpriteComponent(
     config: createSpriteComponentConfig
 ): Sprite {
     return {
-        id: createUniqueId(),
-        gameObjectId: config.gameObjectId,
+        ID: createUniqueId(),
+        gameObjectID: config.gameObjectId,
         type: SPRITE_COMPONENT,
         data: {
             name: config.spriteName,

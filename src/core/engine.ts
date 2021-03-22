@@ -26,9 +26,8 @@ export class Engine<T extends EngineTypes> {
     private change: Subject<State>;
 
     constructor() {
-        this.state = initState;
+        this.state = Object.assign({}, initState);
         this.systems = [];
-
         this.change = new BehaviorSubject<State>(this.state);
     }
 
@@ -66,19 +65,19 @@ export class Engine<T extends EngineTypes> {
             this.state.componentIdsByType[component.type] = [];
         }
 
-        this.state.componentIdsByType[component.type].push(component.id);
+        this.state.componentIdsByType[component.type].push(component.ID);
 
         // Cache component -> game object
         if (
             !this.state.componentIdByGameObject.hasOwnProperty(
-                component.gameObjectId
+                component.gameObjectID
             )
         ) {
-            this.state.componentIdByGameObject[component.gameObjectId] = {};
+            this.state.componentIdByGameObject[component.gameObjectID] = {};
         }
-        this.state.componentIdByGameObject[component.gameObjectId][
+        this.state.componentIdByGameObject[component.gameObjectID][
             component.type
-        ] = component.id;
+        ] = component.ID;
 
         this.setChanged();
     }

@@ -6,7 +6,7 @@ import { TestSystem } from './test-system';
 import { InputSystem } from './input/input_system';
 import { PhysicsSystem } from './physics/physics_system';
 import { KeyInput } from './input/key_input';
-import { GameEngine, SPRITE_COMPONENT } from './game_engine';
+import { GameEngine } from './game_engine';
 
 export class Game {
     public engine: GameEngine;

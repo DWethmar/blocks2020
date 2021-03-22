@@ -24,8 +24,8 @@ export function createPositionComponent(
     point?: Point3D
 ): Position {
     return {
-        id: createUniqueId(),
-        gameObjectId: gameObjectId,
+        ID: createUniqueId(),
+        gameObjectID: gameObjectId,
         type: POSITION_COMPONENT,
         data: {
             position: point ? point : createPoint(),

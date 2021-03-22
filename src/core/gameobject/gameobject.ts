@@ -1,45 +1,47 @@
 import { createUniqueId } from '../id';
 
 export interface GameObject {
-    id: string;
+    ID: string;
     name: string;
+    parentGameObjectID: string | null;
 }
 
 export function createGameObject(name?: string): GameObject {
     return {
-        id: createUniqueId(),
+        ID: createUniqueId(),
         name: name ? name : '',
+        parentGameObjectID: null,
     };
 }
 
 export type GameObjects = {
-    [id: string]: GameObject;
+    [ID: string]: GameObject;
 };
 
 export const addGameObject = (gameObjects: GameObjects) => (
     g: GameObject
 ): void => {
-    if (!gameObjects[g.id]) {
-        gameObjects[g.id] = g;
+    if (!gameObjects[g.ID]) {
+        gameObjects[g.ID] = g;
     } else {
-        throw `'Game object with id ${g.id} already exists'`;
+        throw `Game object with id ${g.ID} already exists`;
     }
 };
 
 export const getGameObject = (gameObjects: GameObjects) => (
-    id: string
+    ID: string
 ): GameObject | null => {
-    if (!gameObjects[id]) {
+    if (!gameObjects[ID]) {
         return null;
     }
-    return gameObjects[id];
+    return gameObjects[ID];
 };
 
 export const deleteGameObject = (gameObjects: GameObjects) => (
-    id: string
+    ID: string
 ): void => {
-    if (!gameObjects[id]) {
-        throw `'Game object with id ${id} does not exist'`;
+    if (!gameObjects[ID]) {
+        throw `'Game object with id ${ID} does not exist'`;
     }
-    delete gameObjects[id];
+    delete gameObjects[ID];
 };
