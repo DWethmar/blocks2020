@@ -1,7 +1,7 @@
 import * as PIXI from 'pixi.js';
 import { addPoints } from '../../core/point-3d';
-import { System } from '../../core/engine/system';
-import { GameEngine, SPRITE_COMPONENT, POSITION_COMPONENT } from '../spec';
+import { System } from '../../core/system';
+import { GameEngine, POSITION_COMPONENT, SPRITE_COMPONENT } from '../spec';
 
 const data = require('../../assets/sprites-colored/spritesheet.json');
 const image = require('../../assets/sprites-colored/spritesheet.png');
@@ -44,6 +44,7 @@ export class RenderSystem implements System {
         if (!this.spritesheet) {
             return;
         }
+
         for (const c of engine.getComponentsByType(SPRITE_COMPONENT)) {
             const position = engine.getComponent(
                 c.gameObjectId,
@@ -72,6 +73,8 @@ export class RenderSystem implements System {
 
                 this.stage.addChild(newSprite);
                 sprite = newSprite;
+
+                addRendering(this.renderings)(c.id, sprite);
             }
 
             const spritePos = addPoints(position.data.position, c.data.offSet);

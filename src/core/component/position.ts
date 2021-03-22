@@ -1,7 +1,8 @@
 import { Component } from './component';
 import { Point3D } from '../point-3d';
-import { POSITION_COMPONENT } from '../../game/spec';
 import { createUniqueId } from '../id';
+
+export const POSITION_COMPONENT = 'POSITION';
 
 export interface Position extends Component {
     data: {

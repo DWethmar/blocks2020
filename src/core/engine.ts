@@ -5,16 +5,15 @@ import {
     GameObject,
     addGameObject,
     getGameObject,
-} from '../gameobject/gameobject';
+} from './gameobject/gameobject';
 import { System } from './system';
 import {
     Component,
     addComponent,
     ComponentData,
     updateComponent,
-} from '../component/component';
-import { POSITION_COMPONENT } from '../../game/spec';
-import { Position } from '../component/position';
+} from './component/component';
+import { Position, POSITION_COMPONENT } from './component/position';
 
 export type EngineSpec = {
     [name: string]: Component;

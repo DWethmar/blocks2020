@@ -1,8 +1,7 @@
-import { Engine, EngineSpec } from '../core/engine/engine';
+import { Engine, EngineSpec } from '../core/engine';
 import { Sprite } from './render/sprite';
-import { MovementControls } from './movement-controls';
-
-export const POSITION_COMPONENT = 'POSITION';
+import { MovementControls } from './movement_controls';
+export { POSITION_COMPONENT } from '../core/component/position';
 export const SPRITE_COMPONENT = 'SPRITE';
 export const MOVEMENT_CONTROLS_COMPONENT = 'MOVEMENT_CONTROLS';
 

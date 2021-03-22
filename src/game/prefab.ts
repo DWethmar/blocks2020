@@ -2,7 +2,7 @@ import { createGameObject, GameObject } from '../core/gameobject/gameobject';
 import { Point3D } from '../core/point-3d';
 import { createSpriteComponent } from './render/sprite';
 import { Component } from '../core/component/component';
-import { createMovementControlsComponent } from './movement-controls';
+import { createMovementControlsComponent } from './movement_controls';
 import { GameEngine } from './spec';
 import {
     createPositionComponent,

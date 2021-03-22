@@ -1,4 +1,4 @@
-import { KeyUtil } from './key-utl';
+import { KeyUtil } from './key_utl';
 
 export class KeyInput {
     private keys: { [code: string]: string } = {};

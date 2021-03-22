@@ -1,11 +1,11 @@
 import * as PIXI from 'pixi.js';
-import { Engine } from '../core/engine/engine';
-import { Events } from '../core/engine/events';
-import { RenderSystem } from './render/render-system';
+import { Engine } from '../core/engine';
+import { Events } from '../core/events';
+import { RenderSystem } from './render/render_system';
 import { TestSystem } from './test-system';
-import { InputSystem } from './input/input-system';
+import { InputSystem } from './input/input_system';
 import { PhysicsSystem } from './physics/physics-system';
-import { KeyInput } from './input/key-input';
+import { KeyInput } from './input/key_input';
 import { GameEngine, SPRITE_COMPONENT } from './spec';
 
 export class Game {

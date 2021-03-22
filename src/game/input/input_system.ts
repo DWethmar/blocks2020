@@ -1,6 +1,5 @@
-import { KeyInput } from './key-input';
-import { MovementControls } from '../movement-controls';
-import { System } from '../../core/engine/system';
+import { KeyInput } from './key_input';
+import { System } from '../../core/system';
 import {
     GameEngine,
     MOVEMENT_CONTROLS_COMPONENT,

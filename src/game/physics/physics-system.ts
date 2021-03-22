@@ -1,6 +1,6 @@
-import { Events } from '../../core/engine/events';
+import { Events } from '../../core/events';
 import { GameEngine, POSITION_COMPONENT } from '../spec';
-import { System } from '../../core/engine/system';
+import { System } from '../../core/system';
 
 // https://impactjs.com/forums/code/top-down-rpg-style-tile-based-grid-movement
 // https://gamedev.stackexchange.com/questions/50074/how-to-create-simple-acceleration-in-a-2d-sprite?noredirect=1&lq=1

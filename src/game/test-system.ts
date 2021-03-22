@@ -1,6 +1,6 @@
-import { System } from '../core/engine/system';
-import { Events } from '../core/engine/events';
-import { Engine } from '../core/engine/engine';
+import { System } from '../core/system';
+import { Events } from '../core/events';
+import { GameEngine } from './spec';
 
 export class TestSystem implements System {
     private events: Events;
@@ -10,7 +10,7 @@ export class TestSystem implements System {
         this.events = events;
     }
 
-    onAttach(engine: Engine) {}
+    onAttach(engine: GameEngine) {}
 
-    update(engine: Engine, deltaTime: number) {}
+    update(engine: GameEngine, deltaTime: number) {}
 }
