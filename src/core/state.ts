@@ -1,5 +1,5 @@
-import { GameObject, GameObjects } from '../gameobject/gameobject';
-import { Components } from '../component/component';
+import { GameObject, GameObjects } from './gameobject/gameobject';
+import { Components } from './component/component';
 
 export interface State {
     gameObjects: GameObjects;

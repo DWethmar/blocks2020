@@ -4,7 +4,7 @@
     "description": "",
     "main": "index.js",
     "scripts": {
-        "test": "echo \"Error: no test specified\" && exit 1",
+        "test": "jest",
         "start": "parcel src/index.html",
         "build": "NODE_ENV=production parcel build src/index.html",
         "lint": "eslint game/game.ts"
@@ -12,12 +12,15 @@
     "author": "",
     "license": "ISC",
     "devDependencies": {
+        "@babel/preset-typescript": "^7.13.0",
+        "@types/jest": "^26.0.21",
         "@types/react": "^17.0.3",
         "@types/react-dom": "^17.0.2",
         "@types/uuid": "^8.3.0",
         "eslint": "^7.22.0",
         "eslint-config-prettier": "^8.1.0",
         "eslint-plugin-prettier": "^3.3.1",
+        "jest": "^26.6.3",
         "parcel-bundler": "^1.12.4",
         "prettier": "^2.2.1",
         "sass": "^1.32.8",

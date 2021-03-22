@@ -1,7 +1,7 @@
 import { Component } from '../../core/component/component';
 import { createUniqueId } from '../../core/id';
 import { Point3D } from '../../core/point-3d';
-import { SPRITE_COMPONENT } from '../spec';
+import { SPRITE_COMPONENT } from '../game_engine';
 
 export interface Sprite extends Component {
     data: {

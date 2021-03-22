@@ -1,11 +1,9 @@
 import * as React from 'react';
-import { throttleTime } from 'rxjs/operators';
+import { throttleTime, tap } from 'rxjs/operators';
 
 import { useEffect, useState } from 'react';
-import { GameEngine } from '../game/spec';
-import { State } from '../core/engine/state';
-import { GameObject } from '../core/gameobject/gameobject';
-import { Component } from '../core/component/component';
+import { GameEngine } from '../game/game_engine';
+import { State } from '../core/state';
 
 export interface InspectorProps {
     engine: GameEngine;
@@ -16,29 +14,31 @@ export const Inspector: React.FunctionComponent<InspectorProps> = ({
 }) => {
     const [gameState, setGameState] = useState<State>();
     const [selectedId, setSelectedId] = useState<string>();
-    const [selected, setSelected] = useState<[GameObject, Component[]]>();
 
     useEffect(() => {
         const gameStateSubscription = engine
             .onChange()
             .pipe(throttleTime(1500))
             .subscribe((state: State) => {
+                console.log(':D');
                 setGameState(state);
             });
         return () => gameStateSubscription.unsubscribe();
-    });
+    }, []);
 
-    useEffect(() => {
-        if (!!selectedId) {
-            setSelected(engine.getGameObjectAndComponents(selectedId));
-        }
-    }, [selectedId, gameState]);
+    let selected = null;
+    if (!!selectedId) {
+        selected = engine.getGameObjectAndComponents(selectedId);
+    }
 
     return gameState ? (
         <div className="inspector">
             <div className="inspector__game-objects">
                 <span>Inspector</span>
-
+                <div>
+                    components: {Object.keys(gameState.components).length}
+                </div>
+                <div>{Date().toLocaleString()}</div>
                 <ul className="game-objects-list">
                     {Object.values(gameState.gameObjects).map(
                         (gameObject, index) => (
@@ -60,8 +60,16 @@ export const Inspector: React.FunctionComponent<InspectorProps> = ({
             </div>
 
             <div className="inspector__selected">
-                <span>{selectedId}</span>
-                <pre>{JSON.stringify(selected, null, 4)}</pre>
+                {!!selected ? (
+                    <div>
+                        <span>{selectedId}</span>
+                        <pre>{JSON.stringify(selected[0], null, 4)}</pre>
+                        <hr />
+                        <pre>{JSON.stringify(selected[1], null, 4)}</pre>
+                    </div>
+                ) : (
+                    <span>None selected</span>
+                )}
             </div>
         </div>
     ) : (

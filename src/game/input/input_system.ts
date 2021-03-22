@@ -4,7 +4,7 @@ import {
     GameEngine,
     MOVEMENT_CONTROLS_COMPONENT,
     POSITION_COMPONENT,
-} from '../spec';
+} from '../game_engine';
 
 export class InputSystem implements System {
     private keyInput: KeyInput;

@@ -3,7 +3,7 @@ import { Point3D } from '../core/point-3d';
 import { createSpriteComponent } from './render/sprite';
 import { Component } from '../core/component/component';
 import { createMovementControlsComponent } from './movement_controls';
-import { GameEngine } from './spec';
+import { GameEngine } from './game_engine';
 import {
     createPositionComponent,
     createPoint,

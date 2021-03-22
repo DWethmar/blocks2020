@@ -15,12 +15,12 @@ import {
 } from './component/component';
 import { Position, POSITION_COMPONENT } from './component/position';
 
-export type EngineSpec = {
+export type EngineTypes = {
     [name: string]: Component;
     [POSITION_COMPONENT]: Position;
 };
 
-export class Engine<T extends EngineSpec> {
+export class Engine<T extends EngineTypes> {
     private state: State;
     private systems: System[];
     private change: Subject<State>;

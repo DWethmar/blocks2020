@@ -1,5 +1,5 @@
 import { Events } from '../../core/events';
-import { GameEngine, POSITION_COMPONENT } from '../spec';
+import { GameEngine, POSITION_COMPONENT } from '../game_engine';
 import { System } from '../../core/system';
 
 // https://impactjs.com/forums/code/top-down-rpg-style-tile-based-grid-movement

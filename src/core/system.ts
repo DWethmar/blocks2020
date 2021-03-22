@@ -1,7 +1,7 @@
-import { Engine, EngineSpec } from './engine';
+import { Engine, EngineTypes } from './engine';
 
 export interface System {
-    onAttach(engine: Engine<EngineSpec>);
+    onAttach(engine: Engine<EngineTypes>);
 
-    update(engine: Engine<EngineSpec>, deltaTime: number);
+    update(engine: Engine<EngineTypes>, deltaTime: number);
 }

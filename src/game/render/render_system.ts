@@ -1,7 +1,11 @@
 import * as PIXI from 'pixi.js';
 import { addPoints } from '../../core/point-3d';
 import { System } from '../../core/system';
-import { GameEngine, POSITION_COMPONENT, SPRITE_COMPONENT } from '../spec';
+import {
+    GameEngine,
+    POSITION_COMPONENT,
+    SPRITE_COMPONENT,
+} from '../game_engine';
 
 const data = require('../../assets/sprites-colored/spritesheet.json');
 const image = require('../../assets/sprites-colored/spritesheet.png');
