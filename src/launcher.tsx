@@ -7,10 +7,10 @@ import {
     createPlayerPrefab,
     createWallPrefab,
     createTreePrefab,
-    createGrassPrefab
+    createGrassPrefab,
 } from './game/prefab';
 import { Inspector } from './inspector/Inspector';
-import { createPoint } from './game/position';
+import { createPoint } from './core/component/position';
 
 const viewContainer = document.getElementById('game-view');
 

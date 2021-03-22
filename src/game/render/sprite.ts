@@ -1,4 +1,4 @@
-import { Component } from '../../core/engine/component';
+import { Component } from '../../core/component/component';
 import { createUniqueId } from '../../core/id';
 import { Point3D } from '../../core/point-3d';
 import { SPRITE_COMPONENT } from '../spec';
@@ -31,7 +31,7 @@ export function createSpriteComponent(
             name: config.spriteName,
             width: config.width,
             height: config.height,
-            offSet: config.offSet
-        }
+            offSet: config.offSet,
+        },
     };
 }

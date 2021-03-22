@@ -4,7 +4,7 @@ import { System } from '../../core/engine/system';
 import {
     GameEngine,
     MOVEMENT_CONTROLS_COMPONENT,
-    POSITION_COMPONENT
+    POSITION_COMPONENT,
 } from '../spec';
 
 export class InputSystem implements System {
@@ -85,7 +85,7 @@ export class InputSystem implements System {
             p.data.velocity.y = Math.round(p.data.velocity.y * 1000) / 1000;
             p.data.velocity.x = Math.round(p.data.velocity.x * 1000) / 1000;
 
-            engine.updateComponent(c);
+            engine.updateComponent(c.id, c.data);
         }
     }
 }

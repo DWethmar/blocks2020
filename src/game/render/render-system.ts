@@ -6,13 +6,27 @@ import { GameEngine, SPRITE_COMPONENT, POSITION_COMPONENT } from '../spec';
 const data = require('../../assets/sprites-colored/spritesheet.json');
 const image = require('../../assets/sprites-colored/spritesheet.png');
 
+type Renderings = {
+    [id: string]: PIXI.DisplayObject;
+};
+
+const addRendering = (renderings: Renderings) => (
+    id: string,
+    r: PIXI.DisplayObject
+) => (renderings[id] = r);
+const getRendering = (renderings: Renderings) => (id: string) => renderings[id];
+const deleteRendering = (renderings: Renderings) => (id: string) =>
+    delete renderings[id];
+
 export class RenderSystem implements System {
     private stage: PIXI.Container;
     private spritesheet: PIXI.Spritesheet | null;
+    private renderings: Renderings;
 
     constructor(stage: PIXI.Container) {
         this.stage = stage;
         this.spritesheet = null;
+        this.renderings = {};
     }
 
     async onAttach(engine: GameEngine) {
@@ -21,7 +35,7 @@ export class RenderSystem implements System {
             const baseTexture = new PIXI.BaseTexture(image);
             this.spritesheet = new PIXI.Spritesheet(baseTexture, data);
             this.spritesheet.parse(() => {
-                resolve();
+                resolve(true);
             });
         });
     }
@@ -40,22 +54,24 @@ export class RenderSystem implements System {
                 return;
             }
 
-            let sprite = this.stage.getChildByName(c.id) as PIXI.Sprite;
+            let sprite = getRendering(this.renderings)(c.id);
 
+            // create sprite if not exists.
             if (
                 !sprite &&
                 this.spritesheet.textures.hasOwnProperty(c.data.name)
             ) {
-                sprite = new PIXI.Sprite(
+                const newSprite = new PIXI.Sprite(
                     this.spritesheet.textures[c.data.name]
                 );
 
-                sprite.name = c.id;
+                newSprite.name = c.id;
 
-                sprite.width = c.data.width;
-                sprite.height = c.data.height;
+                newSprite.width = c.data.width;
+                newSprite.height = c.data.height;
 
-                this.stage.addChild(sprite);
+                this.stage.addChild(newSprite);
+                sprite = newSprite;
             }
 
             const spritePos = addPoints(position.data.position, c.data.offSet);
@@ -64,7 +80,7 @@ export class RenderSystem implements System {
             sprite.position.y = spritePos.y;
             sprite.zIndex = spritePos.y;
 
-            engine.updateComponent(c);
+            engine.updateComponent(c.id, c.data);
         }
     }
 }

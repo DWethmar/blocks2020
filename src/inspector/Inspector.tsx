@@ -1,20 +1,20 @@
 import * as React from 'react';
 import { throttleTime } from 'rxjs/operators';
 
-import { useEffect, useState, useCallback } from 'react';
+import { useEffect, useState } from 'react';
 import { GameEngine } from '../game/spec';
-import { GameState } from '../core/engine/game-state';
-import { GameObject } from '../core/engine/game-object';
-import { Component } from '../core/engine/component';
+import { State } from '../core/engine/state';
+import { GameObject } from '../core/gameobject/gameobject';
+import { Component } from '../core/component/component';
 
 export interface InspectorProps {
     engine: GameEngine;
 }
 
 export const Inspector: React.FunctionComponent<InspectorProps> = ({
-    engine
+    engine,
 }) => {
-    const [gameState, setGameState] = useState<GameState>();
+    const [gameState, setGameState] = useState<State>();
     const [selectedId, setSelectedId] = useState<string>();
     const [selected, setSelected] = useState<[GameObject, Component[]]>();
 
@@ -22,7 +22,7 @@ export const Inspector: React.FunctionComponent<InspectorProps> = ({
         const gameStateSubscription = engine
             .onChange()
             .pipe(throttleTime(1500))
-            .subscribe((state: GameState) => {
+            .subscribe((state: State) => {
                 setGameState(state);
             });
         return () => gameStateSubscription.unsubscribe();

@@ -1,5 +1,6 @@
 import { Subject, Observable } from 'rxjs';
-import { Action } from './action';
+
+export interface Action {}
 
 export class Events {
     private events: Subject<Action>;

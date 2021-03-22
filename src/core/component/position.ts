@@ -1,7 +1,7 @@
-import { Component } from '../core/engine/component';
-import { Point3D } from '../core/point-3d';
-import { POSITION_COMPONENT } from './spec';
-import { createUniqueId } from '../core/id';
+import { Component } from './component';
+import { Point3D } from '../point-3d';
+import { POSITION_COMPONENT } from '../../game/spec';
+import { createUniqueId } from '../id';
 
 export interface Position extends Component {
     data: {
@@ -28,7 +28,7 @@ export function createPositionComponent(
         type: POSITION_COMPONENT,
         data: {
             position: point ? point : createPoint(),
-            velocity: createPoint()
-        }
+            velocity: createPoint(),
+        },
     };
 }

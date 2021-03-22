@@ -1,10 +1,13 @@
-import { createGameObject, GameObject } from '../core/engine/game-object';
+import { createGameObject, GameObject } from '../core/gameobject/gameobject';
 import { Point3D } from '../core/point-3d';
 import { createSpriteComponent } from './render/sprite';
-import { Component } from '../core/engine/component';
+import { Component } from '../core/component/component';
 import { createMovementControlsComponent } from './movement-controls';
 import { GameEngine } from './spec';
-import { createPositionComponent, createPoint } from './position';
+import {
+    createPositionComponent,
+    createPoint,
+} from '../core/component/position';
 
 export interface Prefab {
     gameObject: GameObject;
@@ -13,7 +16,7 @@ export interface Prefab {
 
 export const createFromPrefab = (engine: GameEngine) => (prefab: Prefab) => {
     engine.addGameObject(prefab.gameObject);
-    prefab.components.forEach(component => engine.addComponent(component));
+    prefab.components.forEach((component) => engine.addComponent(component));
 };
 
 export function createPlayerPrefab(position: Point3D) {
@@ -28,9 +31,9 @@ export function createPlayerPrefab(position: Point3D) {
                 spriteName: 'colored_transparent-30.png',
                 width: 16,
                 height: 16,
-                offSet: createPoint(-8, -16, 0)
-            })
-        ]
+                offSet: createPoint(-8, -16, 0),
+            }),
+        ],
     };
 }
 
@@ -45,9 +48,9 @@ export function createWallPrefab(position: Point3D): Prefab {
                 spriteName: 'colored_transparent-118.png',
                 width: 16,
                 height: 16,
-                offSet: createPoint(-8, -16, 0)
-            })
-        ]
+                offSet: createPoint(-8, -16, 0),
+            }),
+        ],
     };
 }
 
@@ -62,9 +65,9 @@ export function createTreePrefab(position: Point3D): Prefab {
                 spriteName: 'colored_transparent-31.png',
                 width: 16,
                 height: 16,
-                offSet: createPoint(-8, -16, 0)
-            })
-        ]
+                offSet: createPoint(-8, -16, 0),
+            }),
+        ],
     };
 }
 
@@ -79,8 +82,8 @@ export function createGrassPrefab(position: Point3D): Prefab {
                 spriteName: 'colored_transparent-4.png',
                 width: 16,
                 height: 16,
-                offSet: createPoint(-8, -16, 0)
-            })
-        ]
+                offSet: createPoint(-8, -16, 0),
+            }),
+        ],
     };
 }

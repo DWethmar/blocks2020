@@ -1,33 +1,47 @@
 import { BehaviorSubject, Observable, Subject } from 'rxjs';
 
-import { GameState, initState } from './game-state';
-import { GameObject } from './game-object';
+import { State, initState } from './state';
+import {
+    GameObject,
+    addGameObject,
+    getGameObject,
+} from '../gameobject/gameobject';
 import { System } from './system';
-import { Component } from './component';
+import {
+    Component,
+    addComponent,
+    ComponentData,
+    updateComponent,
+} from '../component/component';
+import { POSITION_COMPONENT } from '../../game/spec';
+import { Position } from '../component/position';
 
-export type EngineSpec = Record<string, Component>;
+export type EngineSpec = {
+    [name: string]: Component;
+    [POSITION_COMPONENT]: Position;
+};
 
 export class Engine<T extends EngineSpec> {
-    private state: GameState;
+    private state: State;
     private systems: System[];
-    private change: Subject<GameState>;
+    private change: Subject<State>;
 
     constructor() {
         this.state = initState;
         this.systems = [];
 
-        this.change = new BehaviorSubject<GameState>(this.state);
+        this.change = new BehaviorSubject<State>(this.state);
     }
 
     public update(deltaTime: number) {
-        this.systems.forEach(system => system.update(this, deltaTime));
+        this.systems.forEach((system) => system.update(this, deltaTime));
     }
 
     public getState() {
         return this.state;
     }
 
-    public onChange(): Observable<GameState> {
+    public onChange(): Observable<State> {
         return this.change;
     }
 
@@ -41,12 +55,12 @@ export class Engine<T extends EngineSpec> {
     }
 
     public addGameObject(gameObject: GameObject) {
-        this.state.gameObjects[gameObject.id] = gameObject;
+        addGameObject(this.state.gameObjects)(gameObject);
         this.setChanged();
     }
 
     public addComponent(component: Component) {
-        this.state.components[component.id] = component;
+        addComponent(this.state.components)(component);
 
         // Cache component types
         if (!this.state.componentIdsByType.hasOwnProperty(component.type)) {
@@ -70,8 +84,8 @@ export class Engine<T extends EngineSpec> {
         this.setChanged();
     }
 
-    public updateComponent(component: Component) {
-        this.state.components[component.id] = component;
+    public updateComponent(id: string, data: ComponentData) {
+        updateComponent(this.state.components)(id, data);
         this.setChanged();
     }
 
@@ -101,6 +115,10 @@ export class Engine<T extends EngineSpec> {
         gameObjectId: string
     ): [GameObject, Component[]] {
         const components = [];
+        const gameObject = getGameObject(this.state.gameObjects)(gameObjectId);
+        if (!gameObject) {
+            throw `Could not find gameobject with id ${gameObjectId}`;
+        }
 
         if (this.state.componentIdByGameObject.hasOwnProperty(gameObjectId)) {
             components.push(
@@ -110,14 +128,20 @@ export class Engine<T extends EngineSpec> {
             );
         }
 
-        return [this.state.gameObjects[gameObjectId], components];
+        return [gameObject, components];
     }
 
     public getComponentsByType<K extends keyof T>(type: K): T[K][] {
+        type componentType = T[K];
+
         if (this.state.componentIdsByType.hasOwnProperty(type)) {
-            return this.state.componentIdsByType[
-                type as string
-            ].map((id: string) => Object.assign({}, this.state.components[id]));
+            return this.state.componentIdsByType[type as string].map(
+                (id: string) =>
+                    Object.assign(
+                        {},
+                        this.state.components[id]
+                    ) as componentType
+            );
         }
         return [];
     }

@@ -1,4 +1,4 @@
-import { Component } from '../core/engine/component';
+import { Component } from '../core/component/component';
 import { createUniqueId } from '../core/id';
 import { MOVEMENT_CONTROLS_COMPONENT } from './spec';
 
@@ -18,7 +18,7 @@ export function createMovementControlsComponent(
         type: MOVEMENT_CONTROLS_COMPONENT,
         data: {
             maxSpeed: 2,
-            speed: 0.2
-        }
+            speed: 0.2,
+        },
     };
 }

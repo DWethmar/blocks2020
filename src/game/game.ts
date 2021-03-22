@@ -6,9 +6,10 @@ import { TestSystem } from './test-system';
 import { InputSystem } from './input/input-system';
 import { PhysicsSystem } from './physics/physics-system';
 import { KeyInput } from './input/key-input';
+import { GameEngine, SPRITE_COMPONENT } from './spec';
 
 export class Game {
-    public engine: Engine;
+    public engine: GameEngine;
     public events: Events;
 
     private keyInput: KeyInput;
@@ -16,7 +17,7 @@ export class Game {
     constructor(container: HTMLElement) {
         const app = new PIXI.Application({
             width: 400,
-            height: 400
+            height: 400,
         });
 
         container.appendChild(app.view);
