@@ -11,16 +11,43 @@ export type Components = {
     [id: string]: Component;
 };
 
-export const addComponent = (components: Components) => (c: Component) =>
-    (components[c.id] = c);
+export const addComponent = (components: Components) => (
+    c: Component
+): void => {
+    if (!components[c.id]) {
+        components[c.id] = c;
+    } else {
+        throw Error(`Game object with id ${c.id} already exists`);
+    }
+};
 
-export const getComponent = (components: Components) => (id: string) =>
-    components[id];
+export const getComponent = (components: Components) => (
+    id: string
+): Component | null => {
+    if (components[id]) {
+        return components[id];
+    }
+    return null;
+};
 
-export const deleteComponent = (components: Components) => (id: string) =>
-    delete components[id];
+export const deleteComponent = (components: Components) => (
+    id: string
+): boolean => {
+    if (components[id]) {
+        delete components[id];
+        return true;
+    }
+    return false;
+};
 
 export const updateComponent = (components: Components) => (
     id: string,
     data: ComponentData
-) => (getComponent(components)(id).data = data);
+): boolean => {
+    const c = getComponent(components)(id);
+    if (c) {
+        c.data = data;
+        return true;
+    }
+    return false;
+};

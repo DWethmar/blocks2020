@@ -34,7 +34,7 @@ export class InputSystem implements System {
             const keyRight = this.keyInput.isKeyPressed('d');
 
             if (keyUp && !keyDown) {
-                if (p.data.velocity.y < -maxSpeed) {
+                if (p.data.velocity.y - speed < -maxSpeed) {
                     p.data.velocity.y = -maxSpeed;
                 } else {
                     p.data.velocity.y -= speed;
@@ -46,7 +46,7 @@ export class InputSystem implements System {
             }
 
             if (keyDown && !keyUp) {
-                if (p.data.velocity.y > maxSpeed) {
+                if (p.data.velocity.y + speed > maxSpeed) {
                     p.data.velocity.y = maxSpeed;
                 } else {
                     p.data.velocity.y += speed;
@@ -58,7 +58,7 @@ export class InputSystem implements System {
             }
 
             if (keyLeft && !keyRight) {
-                if (p.data.velocity.x < -maxSpeed) {
+                if (p.data.velocity.x - speed < -maxSpeed) {
                     p.data.velocity.x = -maxSpeed;
                 } else {
                     p.data.velocity.x -= speed;
@@ -70,7 +70,7 @@ export class InputSystem implements System {
             }
 
             if (keyRight && !keyLeft) {
-                if (p.data.velocity.x > maxSpeed) {
+                if (p.data.velocity.x + speed > maxSpeed) {
                     p.data.velocity.x = maxSpeed;
                 } else {
                     p.data.velocity.x += speed;

@@ -16,7 +16,9 @@ export type GameObjects = {
     [id: string]: GameObject;
 };
 
-export const addGameObject = (gameObjects: GameObjects) => (g: GameObject) => {
+export const addGameObject = (gameObjects: GameObjects) => (
+    g: GameObject
+): void => {
     if (!gameObjects[g.id]) {
         gameObjects[g.id] = g;
     } else {
@@ -33,7 +35,9 @@ export const getGameObject = (gameObjects: GameObjects) => (
     return gameObjects[id];
 };
 
-export const deleteGameObject = (gameObjects: GameObjects) => (id: string) => {
+export const deleteGameObject = (gameObjects: GameObjects) => (
+    id: string
+): void => {
     if (!gameObjects[id]) {
         throw `'Game object with id ${id} does not exist'`;
     }

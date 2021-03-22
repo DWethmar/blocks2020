@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { throttleTime, tap } from 'rxjs/operators';
+import { throttleTime } from 'rxjs/operators';
 
 import { useEffect, useState, useMemo } from 'react';
 import { GameEngine } from '../game/game_engine';
