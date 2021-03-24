@@ -33,7 +33,7 @@ export class Game {
         this.engine = new Engine();
         this.keyInput = new KeyInput();
 
-        // this.engine.addSystem(new TestSystem(this.events, app.stage));
+        this.engine.addSystem(new TestSystem(this.events, app.stage));
         this.engine.addSystem(new RenderSystem(app.stage));
         this.engine.addSystem(new InputSystem(this.keyInput));
         this.engine.addSystem(new CollisionSystem(this.events, sceneSize));

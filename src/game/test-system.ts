@@ -43,9 +43,10 @@ export class TestSystem implements System {
             let textGraphic = getRendering(this.debugRenderings)(
                 tid
             ) as PIXI.Text;
-            let debugText = `x:${Math.floor(c.data.position.x)}\ny:${Math.floor(
-                c.data.position.y
-            )}\nz:${Math.floor(c.data.position.z)}`;
+            let debugText = [
+                `x: ${Math.floor(c.data.position.x)} | ${c.data.velocity.x}`,
+                `y:${Math.floor(c.data.position.y)} | ${c.data.velocity.y}`,
+            ].join('\n');
 
             if (!textGraphic) {
                 textGraphic = new PIXI.Text(debugText, {

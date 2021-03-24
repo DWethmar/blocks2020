@@ -23,11 +23,11 @@ export class FollowSystem implements System {
             const tx = Math.floor(c.data.target.x);
             const ty = Math.floor(c.data.target.y);
 
-            const keyUp = y != ty && y > ty;
-            const keyDown = y != ty && y < ty;
+            let keyUp = y != ty && y > ty;
+            let keyDown = y != ty && y < ty;
 
-            const keyLeft = x != tx && x > tx;
-            const keyRight = x != tx && x < tx;
+            let keyLeft = x != tx && x > tx;
+            let keyRight = x != tx && x < tx;
 
             if (keyUp && !keyDown) {
                 if (p.data.velocity.y - speed < -maxSpeed) {

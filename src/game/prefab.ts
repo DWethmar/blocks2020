@@ -67,7 +67,7 @@ export function createMobPrefab(position: Point3D): Prefab {
                 friction: 1,
                 frictionStatic: 1,
                 frictionAir: 1,
-                restitution: 0,
+                restitution: 0.1,
             }),
             createSpriteComponent({
                 gameObjectId: mob.ID,
