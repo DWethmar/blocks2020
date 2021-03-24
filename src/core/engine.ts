@@ -100,6 +100,7 @@ export class Engine<T extends EngineTypes> {
                 `Gameobject with id: ${component.gameObjectID} has a component of type: ${component.type}`
             );
         }
+
         updateComponent(this.state.components)(component);
         this.setChanged();
     }

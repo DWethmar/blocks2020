@@ -9,6 +9,23 @@ import SpatialManager, { Geometry } from 'spatial-hashmap';
 import * as PIXI from 'pixi.js';
 import { addPoints } from '../../core/point-3d';
 
+// function* walk(sX: number, sY: number, eX: number, eY: number, steps: number) {
+//     const stepsX = Math.round(+(sX - eX) / steps);
+//     const stepsY = Math.round(+(sY - eY) / steps);
+
+//     if (stepsX == 0 || stepsY == 0) {
+//         return [0, 0];
+//     }
+
+//     console.log('Steps: ', stepsX, stepsY);
+
+//     for (let x = sX; sX !== eX; sX < eX ? sX + stepsX : sX - stepsX) {
+//         for (let y = sY; sY !== eY; sY < eY ? sY + stepsY : sY - stepsY) {
+//             yield [x, y];
+//         }
+//     }
+// }
+
 // https://impactjs.com/forums/code/top-down-rpg-style-tile-based-grid-movement
 // https://gamedev.stackexchange.com/questions/50074/how-to-create-simple-acceleration-in-a-2d-sprite?noredirect=1&lq=1
 // https://codepen.io/Tobsta/post/implementing-velocity-acceleration-and-friction-on-a-canvas

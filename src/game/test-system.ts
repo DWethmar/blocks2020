@@ -47,7 +47,7 @@ export class TestSystem implements System {
             if (!textGraphic) {
                 textGraphic = new PIXI.Text(debugText, {
                     fontFamily: 'Arial',
-                    fontSize: 11,
+                    fontSize: 14,
                     fill: 0xff1010,
                     align: 'left',
                 });
