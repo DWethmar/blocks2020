@@ -40,10 +40,7 @@ export class RenderSystem implements System {
                 c.gameObjectID,
                 POSITION_COMPONENT
             );
-
-            if (!position) {
-                return;
-            }
+            if (!position) continue;
 
             let sprite = getRendering(this.renderings)(c.ID);
 

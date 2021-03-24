@@ -12,13 +12,9 @@ export class FollowSystem implements System {
         for (const c of engine.getComponentsByType(FOLLOW_COMPONENT)) {
             const p = engine.getComponent(c.gameObjectID, POSITION_COMPONENT);
 
-            if (!p) {
-                return;
-            }
+            if (!p) continue;
 
-            console.log('Think');
-
-            const maxSpeed = 1;
+            const maxSpeed = 2;
             const speed = 0.2;
 
             const x = Math.floor(p.data.position.x);
