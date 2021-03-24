@@ -1,7 +1,7 @@
 import { Events } from '../../core/events';
 import { GameEngine, POSITION_COMPONENT } from '../game_engine';
 import { System } from '../../core/system';
-import { Collision, COLLISION_COMPONENT } from './collision';
+import { COLLISION_COMPONENT } from './collision';
 import { Dimensions } from '../dimensions';
 import { Renderings, addRendering, getRendering } from '../render/renderings';
 import { addBody, Bodies, getBody } from './bodies';
@@ -25,7 +25,6 @@ export class CollisionSystem implements System {
 
     // Matter JS
     private bodies: Bodies;
-    private initializedBodies: string[];
     private renderer?: Matter.Render;
 
     constructor(events: Events, sceneSize: Dimensions, stage: PIXI.Container) {
@@ -38,8 +37,6 @@ export class CollisionSystem implements System {
         this.bodies = {};
         // create an engine
         this.collisionEngine = Matter.Engine.create();
-        this.initializedBodies = [];
-
         const pEl = document.getElementById('game-physics');
         if (pEl) {
             this.renderer = Matter.Render.create({
@@ -95,13 +92,14 @@ export class CollisionSystem implements System {
                     c.data.width,
                     c.data.height,
                     {
-                        density: 0.001,
-                        friction: 1,
-                        frictionStatic: 0,
-                        frictionAir: 1,
-                        restitution: 0.5,
+                        density: c.data.density,
+                        friction: c.data.friction,
+                        frictionStatic: c.data.frictionStatic,
+                        frictionAir: c.data.frictionAir,
+                        restitution: c.data.restitution,
                     }
                 );
+                body.isStatic = c.data.isStatic;
                 Matter.Body.setInertia(body, Infinity);
                 Matter.World.add(colEng.world, body);
                 addBody(this.bodies)(c.ID, body);

@@ -31,11 +31,46 @@ export function createPlayerPrefab(position: Point3D): Prefab {
                 width: 16,
                 height: 16,
                 offSet: createPoint(-8, -16, 0),
+                isStatic: false,
+                density: 0.005,
+                friction: 1,
+                frictionStatic: 0,
+                frictionAir: 1,
+                restitution: 0.5,
             }),
             createMovementControlsComponent(player.ID),
             createSpriteComponent({
                 gameObjectId: player.ID,
                 spriteName: 'colored_transparent-30.png',
+                width: 16,
+                height: 16,
+                offSet: createPoint(-8, -16, 0),
+            }),
+        ],
+    };
+}
+
+export function createBoxPrefab(position: Point3D): Prefab {
+    const wall = createGameObject('box');
+    return {
+        gameObject: wall,
+        components: [
+            createPositionComponent(wall.ID, position),
+            createCollisionComponent({
+                gameObjectId: wall.ID,
+                width: 16,
+                height: 16,
+                offSet: createPoint(-8, -16, 0),
+                isStatic: false,
+                density: 0.005,
+                friction: 1,
+                frictionStatic: 0,
+                frictionAir: 1,
+                restitution: 0.5,
+            }),
+            createSpriteComponent({
+                gameObjectId: wall.ID,
+                spriteName: 'colored_transparent-578.png',
                 width: 16,
                 height: 16,
                 offSet: createPoint(-8, -16, 0),
@@ -55,6 +90,12 @@ export function createWallPrefab(position: Point3D): Prefab {
                 width: 16,
                 height: 16,
                 offSet: createPoint(-8, -16, 0),
+                isStatic: true,
+                density: 0.005,
+                friction: 1,
+                frictionStatic: 0,
+                frictionAir: 1,
+                restitution: 0.5,
             }),
             createSpriteComponent({
                 gameObjectId: wall.ID,

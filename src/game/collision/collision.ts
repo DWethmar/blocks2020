@@ -8,6 +8,12 @@ export const COLLISION_COMPONENT = 'COLLISION';
 export interface Collision extends Component {
     data: Dimensions & {
         offSet: Point3D;
+        isStatic: boolean;
+        density: number;
+        friction: number;
+        frictionStatic: number;
+        frictionAir: number;
+        restitution: number;
     };
 }
 
@@ -16,6 +22,12 @@ export interface createCollisionComponentConfig {
     width: number;
     height: number;
     offSet: Point3D;
+    isStatic: boolean;
+    density?: number;
+    friction?: number;
+    frictionStatic?: number;
+    frictionAir?: number;
+    restitution?: number;
 }
 
 export function createCollisionComponent(
@@ -29,6 +41,12 @@ export function createCollisionComponent(
             width: config.width,
             height: config.height,
             offSet: config.offSet,
+            isStatic: config.isStatic,
+            density: config.density || 0.005,
+            friction: config.friction || 1,
+            frictionStatic: config.frictionStatic || 0,
+            frictionAir: config.frictionAir || 1,
+            restitution: config.restitution || 0.5,
         },
     };
 }
