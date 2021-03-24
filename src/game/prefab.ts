@@ -8,7 +8,8 @@ import {
     createPositionComponent,
     createPoint,
 } from '../core/component/position';
-import { createCollisionComponent } from './collision/collision';
+import { createColliderComponent } from './collision/collider';
+import { createFollowComponent } from './behavior/follow';
 
 export interface Prefab {
     gameObject: GameObject;
@@ -26,7 +27,7 @@ export function createPlayerPrefab(position: Point3D): Prefab {
         gameObject: player,
         components: [
             createPositionComponent(player.ID, position),
-            createCollisionComponent({
+            createColliderComponent({
                 gameObjectId: player.ID,
                 width: 16,
                 height: 16,
@@ -50,14 +51,14 @@ export function createPlayerPrefab(position: Point3D): Prefab {
     };
 }
 
-export function createBoxPrefab(position: Point3D): Prefab {
-    const wall = createGameObject('box');
+export function createMobPrefab(position: Point3D): Prefab {
+    const mob = createGameObject('mob');
     return {
-        gameObject: wall,
+        gameObject: mob,
         components: [
-            createPositionComponent(wall.ID, position),
-            createCollisionComponent({
-                gameObjectId: wall.ID,
+            createPositionComponent(mob.ID, position),
+            createColliderComponent({
+                gameObjectId: mob.ID,
                 width: 16,
                 height: 16,
                 offSet: createPoint(-8, -16, 0),
@@ -69,7 +70,40 @@ export function createBoxPrefab(position: Point3D): Prefab {
                 restitution: 0.5,
             }),
             createSpriteComponent({
-                gameObjectId: wall.ID,
+                gameObjectId: mob.ID,
+                spriteName: 'colored_transparent-26.png',
+                width: 16,
+                height: 16,
+                offSet: createPoint(-8, -16, 0),
+            }),
+            createFollowComponent({
+                gameObjectId: mob.ID,
+                target: createPoint(300, 200, 0),
+            }),
+        ],
+    };
+}
+
+export function createBoxPrefab(position: Point3D): Prefab {
+    const box = createGameObject('box');
+    return {
+        gameObject: box,
+        components: [
+            createPositionComponent(box.ID, position),
+            createColliderComponent({
+                gameObjectId: box.ID,
+                width: 16,
+                height: 16,
+                offSet: createPoint(-8, -16, 0),
+                isStatic: false,
+                density: 0.005,
+                friction: 1,
+                frictionStatic: 0,
+                frictionAir: 1,
+                restitution: 0.5,
+            }),
+            createSpriteComponent({
+                gameObjectId: box.ID,
                 spriteName: 'colored_transparent-578.png',
                 width: 16,
                 height: 16,
@@ -85,7 +119,7 @@ export function createWallPrefab(position: Point3D): Prefab {
         gameObject: wall,
         components: [
             createPositionComponent(wall.ID, position),
-            createCollisionComponent({
+            createColliderComponent({
                 gameObjectId: wall.ID,
                 width: 16,
                 height: 16,

@@ -4,7 +4,7 @@ import { Events } from '../core/events';
 import { GameEngine, POSITION_COMPONENT } from './game_engine';
 import { Renderings, addRendering, getRendering } from './render/renderings';
 import { addPoints } from '../core/point-3d';
-import { COLLISION_COMPONENT } from './collision/collision';
+import { COLLISION_COMPONENT } from './collision/collider';
 
 export class TestSystem implements System {
     private events: Events;

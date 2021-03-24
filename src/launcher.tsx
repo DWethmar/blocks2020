@@ -9,6 +9,7 @@ import {
     createTreePrefab,
     createGrassPrefab,
     createBoxPrefab,
+    createMobPrefab,
 } from './game/prefab';
 import { Inspector } from './inspector/Inspector';
 import { createPoint } from './core/component/position';
@@ -29,6 +30,8 @@ if (viewContainer) {
     for (let i = 0; i < 10; i++) {
         gameObjectCreator(createBoxPrefab(createPoint(250, i * 40 + 10)));
     }
+
+    gameObjectCreator(createMobPrefab(createPoint(200, 100)));
 
     ReactDOM.render(<Inspector engine={game.engine} />, inspectorContainer);
 }

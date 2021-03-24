@@ -5,7 +5,7 @@ import { Dimensions } from '../dimensions';
 
 export const COLLISION_COMPONENT = 'COLLISION';
 
-export interface Collision extends Component {
+export interface Collider extends Component {
     data: Dimensions & {
         offSet: Point3D;
         isStatic: boolean;
@@ -17,7 +17,7 @@ export interface Collision extends Component {
     };
 }
 
-export interface createCollisionComponentConfig {
+export interface createColliderComponentConfig {
     gameObjectId: string;
     width: number;
     height: number;
@@ -30,9 +30,9 @@ export interface createCollisionComponentConfig {
     restitution?: number;
 }
 
-export function createCollisionComponent(
-    config: createCollisionComponentConfig
-): Collision {
+export function createColliderComponent(
+    config: createColliderComponentConfig
+): Collider {
     return {
         ID: createUniqueId(),
         gameObjectID: config.gameObjectId,

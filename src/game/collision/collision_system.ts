@@ -1,7 +1,7 @@
 import { Events } from '../../core/events';
 import { GameEngine, POSITION_COMPONENT } from '../game_engine';
 import { System } from '../../core/system';
-import { COLLISION_COMPONENT } from './collision';
+import { COLLISION_COMPONENT } from './collider';
 import { Dimensions } from '../dimensions';
 import { Renderings, addRendering, getRendering } from '../render/renderings';
 import { addBody, Bodies, getBody } from './bodies';
