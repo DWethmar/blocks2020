@@ -12,7 +12,7 @@ import {
 import { Inspector } from './inspector/Inspector';
 import { createPoint } from './core/component/position';
 
-const viewContainer = document.getElementById('game-view');
+const viewContainer = document.getElementById('game-scene');
 
 if (viewContainer) {
     const inspectorContainer = document.getElementById('game-inspector');

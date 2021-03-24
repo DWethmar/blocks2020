@@ -4,27 +4,12 @@ import { System } from '../../core/system';
 import { Collision, COLLISION_COMPONENT } from './collision';
 import { Dimensions } from '../dimensions';
 import { Renderings, addRendering, getRendering } from '../render/renderings';
+import { addBody, Bodies, getBody } from './bodies';
 
-import SpatialManager, { Geometry } from 'spatial-hashmap';
 import * as PIXI from 'pixi.js';
 import { addPoints } from '../../core/point-3d';
 
-// function* walk(sX: number, sY: number, eX: number, eY: number, steps: number) {
-//     const stepsX = Math.round(+(sX - eX) / steps);
-//     const stepsY = Math.round(+(sY - eY) / steps);
-
-//     if (stepsX == 0 || stepsY == 0) {
-//         return [0, 0];
-//     }
-
-//     console.log('Steps: ', stepsX, stepsY);
-
-//     for (let x = sX; sX !== eX; sX < eX ? sX + stepsX : sX - stepsX) {
-//         for (let y = sY; sY !== eY; sY < eY ? sY + stepsY : sY - stepsY) {
-//             yield [x, y];
-//         }
-//     }
-// }
+import Matter from 'matter-js';
 
 // https://impactjs.com/forums/code/top-down-rpg-style-tile-based-grid-movement
 // https://gamedev.stackexchange.com/questions/50074/how-to-create-simple-acceleration-in-a-2d-sprite?noredirect=1&lq=1
@@ -34,28 +19,41 @@ import { addPoints } from '../../core/point-3d';
 export class CollisionSystem implements System {
     private events: Events;
     private stage: PIXI.Container;
-    private spatialManager: SpatialManager<Collision>;
     private debugRenderings: Renderings;
+    private collisionEngine: Matter.Engine;
 
-    static friction = 0.98;
+    // Matter JS
+    private bodies: Bodies;
+    private initializedBodies: string[];
+    private renderer: Matter.Render;
 
     constructor(events: Events, sceneSize: Dimensions, stage: PIXI.Container) {
         console.log('Created CollisionSystem');
         this.events = events;
-
-        this.spatialManager = new SpatialManager(
-            sceneSize.width,
-            sceneSize.height,
-            10
-        );
         this.debugRenderings = {};
         this.stage = stage;
+
+        // Matter JS
+        this.bodies = {};
+        // create an engine
+        this.collisionEngine = Matter.Engine.create();
+        this.initializedBodies = [];
+
+        const pEl = document.getElementById('game-physics');
+        if (pEl) {
+            this.renderer = Matter.Render.create({
+                element: pEl,
+                engine: this.collisionEngine,
+            });
+            Matter.Render.run(this.renderer);
+        }
     }
 
     onAttach(engine: GameEngine) {}
 
     update(engine: GameEngine, deltaTime: number) {
-        this.spatialManager.clearMap();
+        const colEng = this.collisionEngine;
+        colEng.world.gravity.y = 0;
 
         const collisions = engine.getComponentsByType(COLLISION_COMPONENT);
         // register collisions
@@ -71,24 +69,7 @@ export class CollisionSystem implements System {
                 c.data.offSet
             );
 
-            const geometry: Geometry = {
-                pos: {
-                    x: collisionPos.x,
-                    y: collisionPos.y,
-                },
-                aabb: {
-                    min: {
-                        x: 0,
-                        y: 0,
-                    },
-                    max: {
-                        x: c.data.width,
-                        y: c.data.height,
-                    },
-                },
-            };
-            this.spatialManager.registerObject(c, geometry);
-
+            // Debug graphics
             let graphics = getRendering(this.debugRenderings)(
                 c.ID
             ) as PIXI.Graphics;
@@ -102,15 +83,51 @@ export class CollisionSystem implements System {
                 this.stage.addChild(graphics);
                 addRendering(this.debugRenderings)(c.ID, graphics);
             }
-
             graphics.transform.position.x = collisionPos.x;
             graphics.transform.position.y = collisionPos.y;
+
+            let body = getBody(this.bodies)(c.ID);
+            if (!body) {
+                body = Matter.Bodies.rectangle(
+                    collisionPos.x,
+                    collisionPos.y,
+                    c.data.width,
+                    c.data.height,
+                    {
+                        density: 0.001,
+                        friction: 1,
+                        frictionStatic: 0,
+                        frictionAir: 1,
+                        restitution: 0.5,
+                    }
+                );
+                Matter.Body.setInertia(body, Infinity);
+                Matter.World.add(colEng.world, body);
+                addBody(this.bodies)(c.ID, body);
+            }
+
+            body.force = {
+                x: position.data.velocity.x,
+                y: position.data.velocity.y,
+            };
         }
 
-        for (const c of engine.getComponentsByType(POSITION_COMPONENT)) {
-            c.data.position.x += c.data.velocity.x * deltaTime;
-            c.data.position.y += c.data.velocity.y * deltaTime;
-            engine.updateComponent(c);
+        Matter.Engine.update(colEng, deltaTime);
+
+        for (const c of collisions) {
+            console.log(':D');
+            const position = engine.getComponent(
+                c.gameObjectID,
+                POSITION_COMPONENT
+            );
+            if (!position) continue;
+
+            const body = getBody(this.bodies)(c.ID);
+            if (body) {
+                position.data.position.x = body.position.x;
+                position.data.position.y = body.position.y;
+                engine.updateComponent(c);
+            }
         }
     }
 }
