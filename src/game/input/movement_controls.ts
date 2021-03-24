@@ -1,6 +1,7 @@
-import { Component } from '../core/component/component';
-import { createUniqueId } from '../core/id';
-import { MOVEMENT_CONTROLS_COMPONENT } from './game_engine';
+import { Component } from '../../core/component/component';
+import { createUniqueId } from '../../core/id';
+
+export const MOVEMENT_CONTROLS_COMPONENT = 'MOVEMENT_CONTROLS';
 
 export interface MovementControls extends Component {
     data: {

@@ -12,6 +12,8 @@ import {
     addComponent,
     ComponentData,
     updateComponent,
+    getComponent,
+    Components,
 } from './component/component';
 import { Position, POSITION_COMPONENT } from './component/position';
 
@@ -58,6 +60,12 @@ export class Engine<T extends EngineTypes> {
     }
 
     public addComponent(component: Component) {
+        if (this.getComponent(component.gameObjectID, component.type) != null) {
+            throw new Error(
+                `Gameobject with id: ${component.gameObjectID} already has a component of type: ${component.type}`
+            );
+        }
+
         addComponent(this.state.components)(component);
 
         // Cache component types
@@ -82,8 +90,17 @@ export class Engine<T extends EngineTypes> {
         this.setChanged();
     }
 
-    public updateComponent(id: string, data: ComponentData) {
-        updateComponent(this.state.components)(id, data);
+    public updateComponent(component: Component) {
+        const current = this.getComponent(
+            component.gameObjectID,
+            component.type
+        );
+        if (current != null && current.type != component.type) {
+            throw new Error(
+                `Gameobject with id: ${component.gameObjectID} has a component of type: ${component.type}`
+            );
+        }
+        updateComponent(this.state.components)(component);
         this.setChanged();
     }
 

@@ -1,10 +1,7 @@
 import { KeyInput } from './key_input';
 import { System } from '../../core/system';
-import {
-    GameEngine,
-    MOVEMENT_CONTROLS_COMPONENT,
-    POSITION_COMPONENT,
-} from '../game_engine';
+import { GameEngine, POSITION_COMPONENT } from '../game_engine';
+import { MOVEMENT_CONTROLS_COMPONENT } from './movement_controls';
 
 export class InputSystem implements System {
     private keyInput: KeyInput;
@@ -84,7 +81,7 @@ export class InputSystem implements System {
             p.data.velocity.y = Math.round(p.data.velocity.y * 1000) / 1000;
             p.data.velocity.x = Math.round(p.data.velocity.x * 1000) / 1000;
 
-            engine.updateComponent(c.ID, c.data);
+            engine.updateComponent(c);
         }
     }
 }

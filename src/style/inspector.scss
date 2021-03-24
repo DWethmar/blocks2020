@@ -1,7 +1,7 @@
 .inspector {
     display: flex;
 
-    &__game-objects{
+    &__game-objects {
         width: 265px;
         background: red;
     }
@@ -19,7 +19,7 @@
     list-style-type: none;
 
     &__item {
-        button{
+        button {
             width: 100%;
             text-align: left;
 

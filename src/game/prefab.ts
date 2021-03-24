@@ -2,12 +2,13 @@ import { createGameObject, GameObject } from '../core/gameobject/gameobject';
 import { Point3D } from '../core/point-3d';
 import { createSpriteComponent } from './render/sprite';
 import { Component } from '../core/component/component';
-import { createMovementControlsComponent } from './movement_controls';
+import { createMovementControlsComponent } from './input/movement_controls';
 import { GameEngine } from './game_engine';
 import {
     createPositionComponent,
     createPoint,
 } from '../core/component/position';
+import { createCollisionComponent } from './collision/collision';
 
 export interface Prefab {
     gameObject: GameObject;
@@ -25,6 +26,12 @@ export function createPlayerPrefab(position: Point3D): Prefab {
         gameObject: player,
         components: [
             createPositionComponent(player.ID, position),
+            createCollisionComponent({
+                gameObjectId: player.ID,
+                width: 16,
+                height: 16,
+                offSet: createPoint(-8, -16, 0),
+            }),
             createMovementControlsComponent(player.ID),
             createSpriteComponent({
                 gameObjectId: player.ID,
@@ -33,13 +40,6 @@ export function createPlayerPrefab(position: Point3D): Prefab {
                 height: 16,
                 offSet: createPoint(-8, -16, 0),
             }),
-            // createSpriteComponent({
-            //     gameObjectId: player.id,
-            //     spriteName: 'colored_transparent-751.png',
-            //     width: 16,
-            //     height: 16,
-            //     offSet: createPoint(-8, -32, 0),
-            // }),
         ],
     };
 }
@@ -50,6 +50,12 @@ export function createWallPrefab(position: Point3D): Prefab {
         gameObject: wall,
         components: [
             createPositionComponent(wall.ID, position),
+            createCollisionComponent({
+                gameObjectId: wall.ID,
+                width: 16,
+                height: 16,
+                offSet: createPoint(-8, -16, 0),
+            }),
             createSpriteComponent({
                 gameObjectId: wall.ID,
                 spriteName: 'colored_transparent-118.png',

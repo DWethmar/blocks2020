@@ -41,12 +41,11 @@ export const deleteComponent = (components: Components) => (
 };
 
 export const updateComponent = (components: Components) => (
-    ID: string,
-    data: ComponentData
+    component: Component
 ): boolean => {
-    const c = getComponent(components)(ID);
+    const c = getComponent(components)(component.ID);
     if (c) {
-        c.data = data;
+        c.data = component.data;
         return true;
     }
     return false;

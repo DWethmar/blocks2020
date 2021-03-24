@@ -1,26 +1,12 @@
 import * as PIXI from 'pixi.js';
 import { addPoints } from '../../core/point-3d';
 import { System } from '../../core/system';
-import {
-    GameEngine,
-    POSITION_COMPONENT,
-    SPRITE_COMPONENT,
-} from '../game_engine';
+import { GameEngine, POSITION_COMPONENT } from '../game_engine';
+import { SPRITE_COMPONENT } from './sprite';
+import { Renderings, addRendering, getRendering } from './renderings';
 
 const data = require('../../assets/sprites-colored/spritesheet.json');
 const image = require('../../assets/sprites-colored/spritesheet.png');
-
-type Renderings = {
-    [id: string]: PIXI.DisplayObject;
-};
-
-const addRendering = (renderings: Renderings) => (
-    id: string,
-    r: PIXI.DisplayObject
-) => (renderings[id] = r);
-const getRendering = (renderings: Renderings) => (id: string) => renderings[id];
-const deleteRendering = (renderings: Renderings) => (id: string) =>
-    delete renderings[id];
 
 export class RenderSystem implements System {
     private stage: PIXI.Container;
@@ -87,7 +73,7 @@ export class RenderSystem implements System {
             sprite.position.y = spritePos.y;
             sprite.zIndex = spritePos.y;
 
-            engine.updateComponent(c.ID, c.data);
+            engine.updateComponent(c);
         }
     }
 }
