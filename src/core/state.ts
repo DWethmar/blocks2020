@@ -15,9 +15,11 @@ export interface State {
     };
 }
 
-export const initState: State = {
-    gameObjects: {},
-    components: {},
-    componentIdsByType: {},
-    componentIdByGameObject: {},
-};
+export function newState(): State {
+    return {
+        gameObjects: {},
+        components: {},
+        componentIdsByType: {},
+        componentIdByGameObject: {},
+    };
+}

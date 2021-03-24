@@ -1,6 +1,6 @@
 import { BehaviorSubject, Observable, Subject } from 'rxjs';
 
-import { State, initState } from './state';
+import { State, newState } from './state';
 import {
     GameObject,
     addGameObject,
@@ -10,10 +10,7 @@ import { System } from './system';
 import {
     Component,
     addComponent,
-    ComponentData,
     updateComponent,
-    getComponent,
-    Components,
 } from './component/component';
 import { Position, POSITION_COMPONENT } from './component/position';
 
@@ -28,7 +25,7 @@ export class Engine<T extends EngineTypes> {
     private change: Subject<State>;
 
     constructor() {
-        this.state = Object.assign({}, initState);
+        this.state = newState();
         this.systems = [];
         this.change = new BehaviorSubject<State>(this.state);
     }
