@@ -26,7 +26,7 @@ export class CollisionSystem implements System {
     // Matter JS
     private bodies: Bodies;
     private initializedBodies: string[];
-    private renderer: Matter.Render;
+    private renderer?: Matter.Render;
 
     constructor(events: Events, sceneSize: Dimensions, stage: PIXI.Container) {
         console.log('Created CollisionSystem');
