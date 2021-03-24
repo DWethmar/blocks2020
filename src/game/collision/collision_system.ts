@@ -19,23 +19,18 @@ import { createPoint } from '../../core/component/position';
 // http://tim.hibal.org/blog/2d-character-movement/
 export class CollisionSystem implements System {
     private events: Events;
-    private stage: PIXI.Container;
-    private debugRenderings: Renderings;
     private collisionEngine: Matter.Engine;
 
     // Matter JS
     private bodies: Bodies;
     private renderer?: Matter.Render;
 
-    constructor(events: Events, sceneSize: Dimensions, stage: PIXI.Container) {
+    constructor(events: Events, sceneSize: Dimensions) {
         console.log('Created CollisionSystem');
         this.events = events;
-        this.debugRenderings = {};
-        this.stage = stage;
 
         // Matter JS
         this.bodies = {};
-        // create an engine
         this.collisionEngine = Matter.Engine.create();
         const pEl = document.getElementById('game-physics');
         if (pEl) {
@@ -50,11 +45,11 @@ export class CollisionSystem implements System {
     onAttach(engine: GameEngine) {}
 
     update(engine: GameEngine, deltaTime: number) {
-        const colEng = this.collisionEngine;
-        colEng.world.gravity.y = 0;
+        const collEng = this.collisionEngine;
+        collEng.world.gravity.y = 0;
 
         const collisions = engine.getComponentsByType(COLLISION_COMPONENT);
-        // register collisions
+        // register and/or create collisions
         for (const c of collisions) {
             const position = engine.getComponent(
                 c.gameObjectID,
@@ -66,23 +61,6 @@ export class CollisionSystem implements System {
                 position.data.position,
                 c.data.offSet
             );
-
-            // Debug graphics
-            let graphics = getRendering(this.debugRenderings)(
-                c.ID
-            ) as PIXI.Graphics;
-
-            if (!graphics) {
-                graphics = new PIXI.Graphics();
-                // set the line style to have a width of 5 and set the color to red
-                graphics.lineStyle(1, 0xff0000);
-                // draw a rectangle
-                graphics.drawRect(0, 0, c.data.width, c.data.height);
-                this.stage.addChild(graphics);
-                addRendering(this.debugRenderings)(c.ID, graphics);
-            }
-            graphics.transform.position.x = collisionPos.x;
-            graphics.transform.position.y = collisionPos.y;
 
             let body = getBody(this.bodies)(c.ID);
             if (!body) {
@@ -101,7 +79,7 @@ export class CollisionSystem implements System {
                 );
                 body.isStatic = c.data.isStatic;
                 Matter.Body.setInertia(body, Infinity);
-                Matter.World.add(colEng.world, body);
+                Matter.World.add(collEng.world, body);
                 addBody(this.bodies)(c.ID, body);
             }
 
@@ -111,8 +89,9 @@ export class CollisionSystem implements System {
             };
         }
 
-        Matter.Engine.update(colEng, deltaTime);
+        Matter.Engine.update(collEng, deltaTime);
 
+        // Apply changes to positions
         for (const c of collisions) {
             const position = engine.getComponent(
                 c.gameObjectID,
