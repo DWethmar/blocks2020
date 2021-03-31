@@ -29,6 +29,10 @@ export class KeyInput {
     }
 
     private keydownListener(event: KeyboardEvent) {
+        if (event.keyCode == 32 && event.target == document.body) {
+            event.preventDefault();
+        }
+
         const name = KeyUtil.codeToKey('' + event.keyCode);
         if (name !== '') {
             this.keys[name] = event.code;

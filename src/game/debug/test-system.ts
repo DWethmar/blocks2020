@@ -90,13 +90,26 @@ export class TestSystem implements System {
                         physicsGraphics = new PIXI.Graphics();
                         // set the line style to have a width of 5 and set the color to red
                         physicsGraphics.lineStyle(1, 0xff0000);
-                        // draw a rectangle
-                        physicsGraphics.drawRect(
-                            0,
-                            0,
-                            collision.data.width,
-                            collision.data.height
-                        );
+
+                        if (collision.data.shape.kind == 'square') {
+                            // draw a rectangle
+                            physicsGraphics.drawRect(
+                                0,
+                                0,
+                                collision.data.shape.width,
+                                collision.data.shape.height
+                            );
+                        }
+
+                        if (collision.data.shape.kind == 'circle') {
+                            // draw a circle
+                            physicsGraphics.drawCircle(
+                                0,
+                                0,
+                                collision.data.shape.radius
+                            );
+                        }
+
                         this.stage.addChild(physicsGraphics);
                         addRendering(this.debugRenderings)(
                             pid,

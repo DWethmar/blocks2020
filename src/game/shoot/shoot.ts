@@ -6,16 +6,15 @@ export const SHOOTER_COMPONENT = 'SHOOTER';
 
 export interface Shooter extends Component {
     data: {
-        direction: Point3D;
+        coolDownMS: number;
     };
 }
 
 export interface createShooterComponentConfig {
     gameObjectId: string;
-    direction: Point3D;
 }
 
-export function createFollowComponent(
+export function createShooterComponent(
     config: createShooterComponentConfig
 ): Shooter {
     return {
@@ -23,7 +22,7 @@ export function createFollowComponent(
         gameObjectID: config.gameObjectId,
         type: SHOOTER_COMPONENT,
         data: {
-            direction: config.direction,
+            coolDownMS: 1000,
         },
     };
 }

@@ -23,6 +23,10 @@ export function subPoints(a: Point3D, b: Point3D) {
     };
 }
 
+export function equal(a: Point3D, b: Point3D) {
+    return a.x == b.x && a.y == b.y && a.z == a.z;
+}
+
 export function distance(a: Point2D, b: Point2D): number {
     return Math.hypot(b.x - a.x, b.y - a.y);
 }

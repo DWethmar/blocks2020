@@ -130,7 +130,7 @@ export class KeyUtil {
         open_bracket: 219,
         back_slash: 220,
         close_braket: 221,
-        single_quote: 222
+        single_quote: 222,
     };
 
     private static keyCodes: Record<string, string> = {
@@ -232,6 +232,6 @@ export class KeyUtil {
         '219': 'open_bracket',
         '220': 'back_slash',
         '221': 'close_braket',
-        '222': 'single_quote'
+        '222': 'single_quote',
     };
 }

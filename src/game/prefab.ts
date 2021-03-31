@@ -1,5 +1,5 @@
 import { createGameObject, GameObject } from '../core/gameobject/gameobject';
-import { Point3D } from '../core/point';
+import { Point2D, Point3D } from '../core/point';
 import { createSpriteComponent } from './render/sprite';
 import { Component } from '../core/component/component';
 import { createMovementControlsComponent } from './input/movement_controls';
@@ -12,6 +12,8 @@ import { createColliderComponent } from './collision/collider';
 import { createFollowComponent } from './behavior/follow';
 import { createDebugComponent } from './debug/debug';
 import { createDirectionComponent } from './direction/direction';
+import { createShooterComponent } from './shoot/shoot';
+import { createBulletComponent } from './shoot/bullet';
 
 export interface Prefab {
     gameObject: GameObject;
@@ -30,9 +32,12 @@ export function createPlayerPrefab(position: Point3D): Prefab {
         components: [
             createPositionComponent(player.ID, position),
             createColliderComponent({
+                shape: {
+                    kind: 'square',
+                    width: 16,
+                    height: 16,
+                },
                 gameObjectId: player.ID,
-                width: 16,
-                height: 16,
                 offSet: createPoint3D(-8, -16, 0),
                 isStatic: false,
                 density: 0.005,
@@ -54,6 +59,49 @@ export function createPlayerPrefab(position: Point3D): Prefab {
                 gameObjectId: player.ID,
                 direction: { x: 1, y: 0 },
             }),
+            createShooterComponent({
+                gameObjectId: player.ID,
+            }),
+        ],
+    };
+}
+
+export function createBulletPrefab(
+    position: Point3D,
+    direction: Point2D
+): Prefab {
+    const bullet = createGameObject('bullet');
+    return {
+        gameObject: bullet,
+        components: [
+            createPositionComponent(bullet.ID, position),
+            createColliderComponent({
+                shape: {
+                    kind: 'circle',
+                    radius: 4,
+                },
+                gameObjectId: bullet.ID,
+                offSet: createPoint3D(-8, -16, 0),
+                isStatic: false,
+                density: 0.01,
+                friction: 0.01,
+                frictionStatic: 0,
+                frictionAir: 0.1,
+                restitution: 0.1,
+                collisionFilterGroup: 2,
+                collisionFilterMask: 1,
+            }),
+            createBulletComponent({
+                gameObjectId: bullet.ID,
+                direction: direction,
+            }),
+            createSpriteComponent({
+                gameObjectId: bullet.ID,
+                spriteName: 'colored_transparent-666.png',
+                width: 16,
+                height: 16,
+                offSet: createPoint3D(-8, -16, 0),
+            }),
         ],
     };
 }
@@ -65,9 +113,12 @@ export function createMobPrefab(position: Point3D): Prefab {
         components: [
             createPositionComponent(mob.ID, position),
             createColliderComponent({
+                shape: {
+                    kind: 'square',
+                    width: 16,
+                    height: 16,
+                },
                 gameObjectId: mob.ID,
-                width: 16,
-                height: 16,
                 offSet: createPoint3D(-8, -16, 0),
                 isStatic: false,
                 density: 0.01,
@@ -99,16 +150,19 @@ export function createBoxPrefab(position: Point3D): Prefab {
         components: [
             createPositionComponent(box.ID, position),
             createColliderComponent({
+                shape: {
+                    kind: 'square',
+                    width: 16,
+                    height: 16,
+                },
                 gameObjectId: box.ID,
-                width: 16,
-                height: 16,
                 offSet: createPoint3D(-8, -16, 0),
                 isStatic: false,
                 density: 0.005,
-                friction: 1,
+                friction: 0.14,
                 frictionStatic: 0,
-                frictionAir: 1,
-                restitution: 0.5,
+                frictionAir: 0.13,
+                restitution: 0.15,
             }),
             createSpriteComponent({
                 gameObjectId: box.ID,
@@ -128,9 +182,12 @@ export function createWallPrefab(position: Point3D): Prefab {
         components: [
             createPositionComponent(wall.ID, position),
             createColliderComponent({
+                shape: {
+                    kind: 'square',
+                    width: 16,
+                    height: 16,
+                },
                 gameObjectId: wall.ID,
-                width: 16,
-                height: 16,
                 offSet: createPoint3D(-8, -16, 0),
                 isStatic: true,
                 density: 0.005,

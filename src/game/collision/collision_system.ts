@@ -1,12 +1,10 @@
 import { Events } from '../../core/events';
 import { GameEngine, POSITION_COMPONENT } from '../game_engine';
 import { System } from '../../core/system';
-import { COLLISION_COMPONENT } from './collider';
+import { COLLISION_COMPONENT, Square } from './collider';
 import { Dimensions } from '../dimensions';
-import { Renderings, addRendering, getRendering } from '../render/renderings';
 import { addBody, Bodies, getBody } from './bodies';
 
-import * as PIXI from 'pixi.js';
 import { addPoints, subPoints } from '../../core/point';
 
 import Matter from 'matter-js';
@@ -95,19 +93,40 @@ export class CollisionSystem implements System {
 
             let body = getBody(this.bodies)(c.ID);
             if (!body) {
-                body = Matter.Bodies.rectangle(
-                    collisionPos.x,
-                    collisionPos.y,
-                    c.data.width,
-                    c.data.height,
-                    {
-                        density: c.data.density,
-                        friction: c.data.friction,
-                        frictionStatic: c.data.frictionStatic,
-                        frictionAir: c.data.frictionAir,
-                        restitution: c.data.restitution,
-                    }
-                );
+                if (c.data.shape.kind == 'square') {
+                    body = Matter.Bodies.rectangle(
+                        collisionPos.x,
+                        collisionPos.y,
+                        c.data.shape.width,
+                        c.data.shape.height,
+                        {
+                            density: c.data.density,
+                            friction: c.data.friction,
+                            frictionStatic: c.data.frictionStatic,
+                            frictionAir: c.data.frictionAir,
+                            restitution: c.data.restitution,
+                        }
+                    );
+                } else if (c.data.shape.kind == 'circle') {
+                    body = Matter.Bodies.circle(
+                        collisionPos.x,
+                        collisionPos.y,
+                        c.data.shape.radius,
+                        {
+                            density: c.data.density,
+                            friction: c.data.friction,
+                            frictionStatic: c.data.frictionStatic,
+                            frictionAir: c.data.frictionAir,
+                            restitution: c.data.restitution,
+                        }
+                    );
+
+                    body.collisionFilter = {
+                        category: c.data.collisionFilterGroup,
+                        mask: c.data.collisionFilterMask,
+                    };
+                }
+
                 body.isStatic = c.data.isStatic;
                 Matter.Body.setInertia(body, Infinity);
                 Matter.World.add(collEng.world, body);

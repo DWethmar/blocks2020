@@ -2,7 +2,15 @@ import { KeyInput } from './key_input';
 import { System } from '../../core/system';
 import { GameEngine, POSITION_COMPONENT } from '../game_engine';
 import { MOVEMENT_CONTROLS_COMPONENT } from './movement_controls';
-import { DIRECTION_COMPONENT } from '../direction/direction';
+import {
+    DIRECTION_COMPONENT,
+    isDown,
+    isLeft,
+    isRight,
+    isUp,
+} from '../direction/direction';
+import { Point2D } from '../../core/point';
+import { createPoint2D } from '../../core/component/position';
 
 export class InputSystem implements System {
     private keyInput: KeyInput;
@@ -96,29 +104,43 @@ export class InputSystem implements System {
                 let dx = direction.data.direction.x;
                 let dy = direction.data.direction.y;
 
-                if (v.x > 0) {
-                    dx = 1;
-                } else if (v.x < 0) {
-                    dx = -1;
-                } else {
-                    dy = 0;
+                let newDirection: Point2D | null = null;
+
+                // Diagonals
+                if (isUp(v)) {
+                    if (isRight(v)) {
+                        newDirection = createPoint2D(-1, 1);
+                    } else if (isLeft(v)) {
+                        newDirection = createPoint2D(-1, -1);
+                    }
+                } else if (isDown(v)) {
+                    if (isRight(v)) {
+                        newDirection = createPoint2D(1, 1);
+                    } else if (isLeft(v)) {
+                        newDirection = createPoint2D(1, -1);
+                    }
                 }
 
-                if (v.y > 0) {
-                    dy = 1;
-                } else if (v.y < 0) {
-                    dy = -1;
-                } else {
-                    dy = 0;
+                if (!newDirection) {
+                    if (isUp(v)) {
+                        newDirection = createPoint2D(0, -1);
+                    } else if (isRight(v)) {
+                        newDirection = createPoint2D(1, 0);
+                    } else if (isDown(v)) {
+                        newDirection = createPoint2D(0, 1);
+                    } else if (isLeft(v)) {
+                        newDirection = createPoint2D(-1, 0);
+                    }
                 }
 
                 if (
-                    dx != direction.data.direction.x ||
-                    dy != direction.data.direction.y
+                    newDirection &&
+                    (newDirection.x != direction.data.direction.x ||
+                        newDirection.y != direction.data.direction.y)
                 ) {
                     direction.data.direction = {
-                        x: dx,
-                        y: dy,
+                        x: newDirection.x,
+                        y: newDirection.y,
                     };
                     engine.updateComponent(direction);
                 }

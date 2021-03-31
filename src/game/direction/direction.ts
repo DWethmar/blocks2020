@@ -27,3 +27,19 @@ export function createDirectionComponent(
         },
     };
 }
+
+export function isUp(p: Point2D): boolean {
+    return p.y < 0;
+}
+
+export function isRight(p: Point2D): boolean {
+    return p.x > 0;
+}
+
+export function isDown(p: Point2D): boolean {
+    return p.y > 0;
+}
+
+export function isLeft(p: Point2D): boolean {
+    return p.x < 0;
+}
