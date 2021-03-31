@@ -2,22 +2,39 @@ import { GameEngine, POSITION_COMPONENT } from '../game_engine';
 import { System } from '../../core/system';
 
 import { FOLLOW_COMPONENT } from './follow';
+import { distance } from '../../core/point';
+import { createPoint } from '../../core/component/position';
 
 export class FollowSystem implements System {
     constructor() {}
 
     onAttach(engine: GameEngine) {}
 
-    update(engine: GameEngine, deltaTime: number) {
+    beforeUpdate(engine: GameEngine): void {}
+
+    update(engine: GameEngine) {
         for (const c of engine.getComponentsByType(FOLLOW_COMPONENT)) {
             const p = engine.getComponent(c.gameObjectID, POSITION_COMPONENT);
 
             if (!p) continue;
 
-            const SPEED = 1;
+            const SPEED = 1.65;
 
-            const target = c.data.target;
+            const target = c.data.path[0];
+            if (!target) {
+                p.data.velocity = createPoint();
+                engine.updateComponent(p);
+                continue;
+            }
+
             const position = p.data.position;
+
+            const d = distance(position, target);
+            if (d < SPEED) {
+                c.data.path = [];
+                engine.updateComponent(c);
+                continue;
+            }
 
             // subtract (= difference vector)
             var dx = target.x - position.x;
@@ -37,7 +54,9 @@ export class FollowSystem implements System {
             p.data.velocity.x = dx * SPEED;
             p.data.velocity.y = dy * SPEED;
 
-            engine.updateComponent(c);
+            engine.updateComponent(p);
+
+            // -----------------------------------------------------------------
 
             // const maxSpeed = 2;
             // const speed = 0.2;
@@ -108,4 +127,6 @@ export class FollowSystem implements System {
             // engine.updateComponent(c);
         }
     }
+
+    afterUpdate(engine: GameEngine): void {}
 }

@@ -1,5 +1,5 @@
 import * as PIXI from 'pixi.js';
-import { addPoints } from '../../core/point-3d';
+import { addPoints } from '../../core/point';
 import { System } from '../../core/system';
 import { GameEngine, POSITION_COMPONENT } from '../game_engine';
 import { SPRITE_COMPONENT } from './sprite';
@@ -30,7 +30,11 @@ export class RenderSystem implements System {
         });
     }
 
-    update(engine: GameEngine, deltaTime: number) {
+    beforeUpdate(engine: GameEngine): void {}
+
+    afterUpdate(engine: GameEngine): void {}
+
+    update(engine: GameEngine) {
         if (!this.spritesheet) {
             return;
         }

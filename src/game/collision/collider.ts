@@ -1,6 +1,6 @@
 import { Component } from '../../core/component/component';
 import { createUniqueId } from '../../core/id';
-import { Point3D } from '../../core/point-3d';
+import { Point3D } from '../../core/point';
 import { Dimensions } from '../dimensions';
 
 export const COLLISION_COMPONENT = 'COLLISION';

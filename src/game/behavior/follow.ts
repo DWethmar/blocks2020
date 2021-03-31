@@ -1,12 +1,12 @@
 import { Component } from '../../core/component/component';
 import { createUniqueId } from '../../core/id';
-import { Point3D } from '../../core/point-3d';
+import { Point3D } from '../../core/point';
 
 export const FOLLOW_COMPONENT = 'FOLLOW';
 
 export interface Follow extends Component {
     data: {
-        target: Point3D;
+        path: Point3D[];
     };
 }
 
@@ -23,7 +23,7 @@ export function createFollowComponent(
         gameObjectID: config.gameObjectId,
         type: FOLLOW_COMPONENT,
         data: {
-            target: config.target,
+            path: [config.target],
         },
     };
 }

@@ -1,5 +1,5 @@
 import { Component } from './component';
-import { Point3D } from '../point-3d';
+import { Point3D } from '../point';
 import { createUniqueId } from '../id';
 
 export const POSITION_COMPONENT = 'POSITION';

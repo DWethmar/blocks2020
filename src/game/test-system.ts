@@ -3,7 +3,7 @@ import { System } from '../core/system';
 import { Events } from '../core/events';
 import { GameEngine, POSITION_COMPONENT } from './game_engine';
 import { Renderings, addRendering, getRendering } from './render/renderings';
-import { addPoints } from '../core/point-3d';
+import { addPoints } from '../core/point';
 import { COLLISION_COMPONENT } from './collision/collider';
 
 export class TestSystem implements System {
@@ -20,7 +20,11 @@ export class TestSystem implements System {
 
     onAttach(engine: GameEngine) {}
 
-    update(engine: GameEngine, deltaTime: number) {
+    beforeUpdate(engine: GameEngine): void {}
+
+    afterUpdate(engine: GameEngine): void {}
+
+    update(engine: GameEngine) {
         for (const c of engine.getComponentsByType(POSITION_COMPONENT)) {
             // Debug position
             let gid = `${c.ID}_graphics`;
@@ -93,6 +97,7 @@ export class TestSystem implements System {
                     this.stage.addChild(physicsGraphics);
                     addRendering(this.debugRenderings)(pid, physicsGraphics);
                 }
+
                 physicsGraphics.transform.position.x = collisionPos.x;
                 physicsGraphics.transform.position.y = collisionPos.y;
             }

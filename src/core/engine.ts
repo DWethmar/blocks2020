@@ -23,15 +23,24 @@ export class Engine<T extends EngineTypes> {
     private state: State;
     private systems: System[];
     private change: Subject<State>;
+    private deltaTime: number;
 
     constructor() {
         this.state = newState();
         this.systems = [];
         this.change = new BehaviorSubject<State>(this.state);
+        this.deltaTime = 0;
+    }
+
+    public getDeltaTime(): number {
+        return this.deltaTime;
     }
 
     public update(deltaTime: number) {
-        this.systems.forEach((system) => system.update(this, deltaTime));
+        this.deltaTime = deltaTime;
+        this.systems.forEach((system) => system.beforeUpdate(this));
+        this.systems.forEach((system) => system.update(this));
+        this.systems.forEach((system) => system.afterUpdate(this));
     }
 
     public getState() {

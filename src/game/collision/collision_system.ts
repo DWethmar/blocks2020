@@ -7,7 +7,7 @@ import { Renderings, addRendering, getRendering } from '../render/renderings';
 import { addBody, Bodies, getBody } from './bodies';
 
 import * as PIXI from 'pixi.js';
-import { addPoints, subPoints } from '../../core/point-3d';
+import { addPoints, subPoints } from '../../core/point';
 
 import Matter from 'matter-js';
 import { createPoint } from '../../core/component/position';
@@ -40,13 +40,44 @@ export class CollisionSystem implements System {
             });
             Matter.Render.run(this.renderer);
         }
+
+        const collEng = this.collisionEngine;
+        collEng.world.gravity.y = 0;
     }
 
     onAttach(engine: GameEngine) {}
 
-    update(engine: GameEngine, deltaTime: number) {
+    beforeUpdate(engine: GameEngine): void {
+        const collisions = engine.getComponentsByType(COLLISION_COMPONENT);
         const collEng = this.collisionEngine;
-        collEng.world.gravity.y = 0;
+
+        Matter.Engine.update(collEng, engine.getDeltaTime());
+
+        // Apply changes to positions
+        for (const c of collisions) {
+            const position = engine.getComponent(
+                c.gameObjectID,
+                POSITION_COMPONENT
+            );
+            if (!position) continue;
+
+            const body = getBody(this.bodies)(c.ID);
+            if (!body) continue;
+
+            const colPos = subPoints(
+                createPoint(body.position.x, body.position.y, 0),
+                c.data.offSet
+            );
+
+            position.data.position.x = colPos.x;
+            position.data.position.y = colPos.y;
+
+            engine.updateComponent(c);
+        }
+    }
+
+    update(engine: GameEngine) {
+        const collEng = this.collisionEngine;
 
         const collisions = engine.getComponentsByType(COLLISION_COMPONENT);
         // register and/or create collisions
@@ -83,33 +114,24 @@ export class CollisionSystem implements System {
                 addBody(this.bodies)(c.ID, body);
             }
 
-            body.force = {
-                x: position.data.velocity.x,
-                y: position.data.velocity.y,
-            };
-        }
-
-        Matter.Engine.update(collEng, deltaTime);
-
-        // Apply changes to positions
-        for (const c of collisions) {
-            const position = engine.getComponent(
-                c.gameObjectID,
-                POSITION_COMPONENT
-            );
-            if (!position) continue;
-
-            const body = getBody(this.bodies)(c.ID);
-
-            const colPos = subPoints(
-                createPoint(body.position.x, body.position.y, 0),
-                c.data.offSet
-            );
-
-            position.data.position.x = colPos.x;
-            position.data.position.y = colPos.y;
-
-            engine.updateComponent(c);
+            if (
+                position.data.velocity.x != 0 ||
+                position.data.velocity.y != 0
+            ) {
+                Matter.Body.applyForce(
+                    body,
+                    {
+                        x: position.data.position.x,
+                        y: position.data.position.y,
+                    },
+                    {
+                        x: position.data.velocity.x,
+                        y: position.data.velocity.y,
+                    }
+                );
+            }
         }
     }
+
+    afterUpdate(engine: GameEngine): void {}
 }

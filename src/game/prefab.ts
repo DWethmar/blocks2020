@@ -1,5 +1,5 @@
 import { createGameObject, GameObject } from '../core/gameobject/gameobject';
-import { Point3D } from '../core/point-3d';
+import { Point3D } from '../core/point';
 import { createSpriteComponent } from './render/sprite';
 import { Component } from '../core/component/component';
 import { createMovementControlsComponent } from './input/movement_controls';

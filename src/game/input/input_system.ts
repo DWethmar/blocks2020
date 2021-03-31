@@ -12,7 +12,11 @@ export class InputSystem implements System {
 
     onAttach(engine: GameEngine) {}
 
-    update(engine: GameEngine, deltaTime: number) {
+    beforeUpdate(engine: GameEngine): void {}
+
+    afterUpdate(engine: GameEngine): void {}
+
+    update(engine: GameEngine) {
         for (const c of engine.getComponentsByType(
             MOVEMENT_CONTROLS_COMPONENT
         )) {
