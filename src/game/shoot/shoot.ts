@@ -1,12 +1,12 @@
 import { Component } from '../../core/component/component';
 import { createUniqueId } from '../../core/id';
-import { Point3D } from '../../core/point';
 
 export const SHOOTER_COMPONENT = 'SHOOTER';
 
 export interface Shooter extends Component {
     data: {
         coolDownMS: number;
+        last: number;
     };
 }
 
@@ -22,7 +22,8 @@ export function createShooterComponent(
         gameObjectID: config.gameObjectId,
         type: SHOOTER_COMPONENT,
         data: {
-            coolDownMS: 1000,
+            coolDownMS: 100,
+            last: 0,
         },
     };
 }

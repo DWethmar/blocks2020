@@ -9,6 +9,8 @@ import { addPoints, subPoints } from '../../core/point';
 
 import Matter from 'matter-js';
 import { createPoint3D } from '../../core/component/position';
+import { Action } from 'rxjs/internal/scheduler/Action';
+import { CollisionEvent } from './event';
 
 // https://impactjs.com/forums/code/top-down-rpg-style-tile-based-grid-movement
 // https://gamedev.stackexchange.com/questions/50074/how-to-create-simple-acceleration-in-a-2d-sprite?noredirect=1&lq=1
@@ -43,7 +45,25 @@ export class CollisionSystem implements System {
         collEng.world.gravity.y = 0;
     }
 
-    onAttach(engine: GameEngine) {}
+    onAttach(engine: GameEngine) {
+        // Events
+        Matter.Events.on(this.collisionEngine, 'collisionStart', (event) => {
+            for (const pair of event.pairs) {
+                const a = engine.getComponent(
+                    pair.bodyA.label,
+                    COLLISION_COMPONENT
+                );
+                const b = engine.getComponent(
+                    pair.bodyA.label,
+                    COLLISION_COMPONENT
+                );
+
+                if (!!a && !!b) {
+                    this.events.dispatch(new CollisionEvent(a, b));
+                }
+            }
+        });
+    }
 
     beforeUpdate(engine: GameEngine): void {
         const collisions = engine.getComponentsByType(COLLISION_COMPONENT);
@@ -62,15 +82,18 @@ export class CollisionSystem implements System {
             const body = getBody(this.bodies)(c.ID);
             if (!body) continue;
 
-            const colPos = subPoints(
-                createPoint3D(body.position.x, body.position.y, 0),
-                c.data.offSet
-            );
+            if (!body.isStatic) {
+                const colPos = createPoint3D(
+                    body.position.x,
+                    body.position.y,
+                    0
+                );
 
-            position.data.position.x = colPos.x;
-            position.data.position.y = colPos.y;
+                position.data.position.x = colPos.x;
+                position.data.position.y = colPos.y;
 
-            engine.updateComponent(c);
+                engine.updateComponent(c);
+            }
         }
     }
 
@@ -86,14 +109,11 @@ export class CollisionSystem implements System {
             );
             if (!position) continue;
 
-            const collisionPos = addPoints(
-                position.data.position,
-                c.data.offSet
-            );
-
             let body = getBody(this.bodies)(c.ID);
             if (!body) {
                 if (c.data.shape.kind == 'square') {
+                    const collisionPos = position.data.position;
+
                     body = Matter.Bodies.rectangle(
                         collisionPos.x,
                         collisionPos.y,
@@ -105,9 +125,16 @@ export class CollisionSystem implements System {
                             frictionStatic: c.data.frictionStatic,
                             frictionAir: c.data.frictionAir,
                             restitution: c.data.restitution,
+                            label: c.ID,
                         }
                     );
                 } else if (c.data.shape.kind == 'circle') {
+                    // const collisionPos = addPoints(
+                    //     position.data.position,
+                    //     c.data.offSet
+                    // );
+                    const collisionPos = position.data.position;
+
                     body = Matter.Bodies.circle(
                         collisionPos.x,
                         collisionPos.y,
@@ -118,6 +145,7 @@ export class CollisionSystem implements System {
                             frictionStatic: c.data.frictionStatic,
                             frictionAir: c.data.frictionAir,
                             restitution: c.data.restitution,
+                            label: c.ID,
                         }
                     );
 
@@ -125,6 +153,11 @@ export class CollisionSystem implements System {
                         category: c.data.collisionFilterGroup,
                         mask: c.data.collisionFilterMask,
                     };
+
+                    Matter.Body.setVelocity(body, {
+                        x: position.data.velocity.x,
+                        y: position.data.velocity.y,
+                    });
                 }
 
                 body.isStatic = c.data.isStatic;

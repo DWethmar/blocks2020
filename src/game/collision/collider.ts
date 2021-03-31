@@ -19,7 +19,6 @@ export interface Square extends Dimensions {
 export interface Collider extends Component {
     data: {
         shape: Circle | Square;
-        offSet: Point3D;
         isStatic: boolean;
         density: number;
         friction: number;
@@ -40,7 +39,6 @@ export interface Collider extends Component {
 export interface createColliderComponentConfig {
     gameObjectId: string;
     shape: shapes;
-    offSet: Point3D;
     isStatic: boolean;
     density?: number;
     friction?: number;
@@ -60,7 +58,6 @@ export function createColliderComponent(
         type: COLLISION_COMPONENT,
         data: {
             shape: config.shape,
-            offSet: config.offSet,
             isStatic: config.isStatic,
             density: config.density || 0.005,
             friction: config.friction || 1,
@@ -68,7 +65,7 @@ export function createColliderComponent(
             frictionAir: config.frictionAir || 1,
             restitution: config.restitution || 0.5,
             collisionFilterGroup: config.collisionFilterGroup || 1,
-            collisionFilterMask: config.collisionFilterMask || 0,
+            collisionFilterMask: config.collisionFilterMask || 1,
         },
     };
 }

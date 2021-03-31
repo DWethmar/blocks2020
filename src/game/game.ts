@@ -41,7 +41,7 @@ export class Game {
         this.engine.addSystem(new CollisionSystem(this.events, sceneSize));
         this.engine.addSystem(new FollowSystem());
         this.engine.addSystem(new ShooterSystem(this.keyInput));
-        this.engine.addSystem(new BulletSystem());
+        this.engine.addSystem(new BulletSystem(this.events));
 
         app.ticker.add((delta: number) => {
             app.stage.sortChildren();

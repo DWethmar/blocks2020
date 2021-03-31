@@ -43,6 +43,13 @@ export class ShooterSystem implements System {
             );
             if (!direction) continue;
 
+            const now = Date.now();
+            if (now > c.data.last + c.data.coolDownMS) {
+                c.data.last = now;
+            } else {
+                continue;
+            }
+
             if (shoot) {
                 const shooterDirection = direction.data.direction;
                 const bulletPos = createPoint2D(
@@ -72,6 +79,8 @@ export class ShooterSystem implements System {
                 );
                 createFromPrefab(engine)(bulletPrefab);
             }
+
+            engine.updateComponent(c);
         }
     }
 

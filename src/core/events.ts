@@ -1,19 +1,25 @@
 import { Subject, Observable } from 'rxjs';
 
-export interface Action {}
+export abstract class Event {
+    public type: string;
+
+    constructor(type: string) {
+        this.type = type;
+    }
+}
 
 export class Events {
-    private events: Subject<Action>;
+    private events: Subject<Event>;
 
     constructor() {
-        this.events = new Subject<Action>();
+        this.events = new Subject<Event>();
     }
 
-    listen(): Observable<Action> {
+    listen(): Observable<Event> {
         return this.events;
     }
 
-    dispatch(action: Action) {
+    dispatch(action: Event) {
         this.events.next(action);
     }
 }

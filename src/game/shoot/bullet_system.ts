@@ -3,9 +3,24 @@ import { System } from '../../core/system';
 import { POSITION_COMPONENT } from '../../core/component/position';
 import { isDown, isLeft, isRight, isUp } from '../direction/direction';
 import { BULLET_COMPONENT } from './bullet';
+import { Events } from '../../core/events';
+import { filter } from 'rxjs/operators';
 
 export class BulletSystem implements System {
-    onAttach(engine: GameEngine) {}
+    private events: Events;
+
+    constructor(events: Events) {
+        this.events = events;
+    }
+
+    onAttach(engine: GameEngine) {
+        this.events
+            .listen()
+            .pipe(filter((x) => x.type == 'CollisionEvent'))
+            .subscribe((event) => {
+                console.log(':D');
+            });
+    }
 
     beforeUpdate(engine: GameEngine): void {}
 
@@ -17,24 +32,34 @@ export class BulletSystem implements System {
             );
             if (!position) continue;
 
-            const d = c.data.direction;
-            if (d.x == 0 || d.y == 0) {
-                if (isUp(d)) {
-                    position.data.velocity.y = -1;
-                }
+            const SPEED = 1.9;
 
-                if (isRight(d)) {
-                    position.data.velocity.x = 1;
+            const d = c.data.direction;
+            if (
+                d &&
+                (position.data.velocity.x == 0 || position.data.velocity.y == 0)
+            ) {
+                if (isUp(d)) {
+                    position.data.velocity.y = -SPEED;
                 }
 
                 if (isDown(d)) {
-                    position.data.velocity.y = 1;
+                    position.data.velocity.y = SPEED;
+                }
+
+                if (isRight(d)) {
+                    position.data.velocity.x = SPEED;
                 }
 
                 if (isLeft(d)) {
-                    position.data.velocity.x = -1;
+                    position.data.velocity.x = -SPEED;
                 }
             }
+
+            const delta = engine.getDeltaTime();
+            position.data.position.x += position.data.velocity.x * delta;
+            position.data.position.y += position.data.velocity.y * delta;
+
             engine.updateComponent(position);
         }
     }

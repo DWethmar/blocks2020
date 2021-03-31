@@ -81,10 +81,7 @@ export class TestSystem implements System {
                         pid
                     ) as PIXI.Graphics;
 
-                    const collisionPos = addPoints(
-                        c.data.position,
-                        collision.data.offSet
-                    );
+                    const collisionPos = c.data.position;
 
                     if (!physicsGraphics) {
                         physicsGraphics = new PIXI.Graphics();

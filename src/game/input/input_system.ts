@@ -109,15 +109,19 @@ export class InputSystem implements System {
                 // Diagonals
                 if (isUp(v)) {
                     if (isRight(v)) {
-                        newDirection = createPoint2D(-1, 1);
-                    } else if (isLeft(v)) {
+                        newDirection = createPoint2D(1, -1);
+                    }
+                    if (isLeft(v)) {
                         newDirection = createPoint2D(-1, -1);
                     }
-                } else if (isDown(v)) {
+                }
+
+                if (isDown(v)) {
                     if (isRight(v)) {
                         newDirection = createPoint2D(1, 1);
-                    } else if (isLeft(v)) {
-                        newDirection = createPoint2D(1, -1);
+                    }
+                    if (isLeft(v)) {
+                        newDirection = createPoint2D(-1, 1);
                     }
                 }
 
