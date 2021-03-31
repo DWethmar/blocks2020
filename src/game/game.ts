@@ -2,7 +2,7 @@ import * as PIXI from 'pixi.js';
 import { Engine } from '../core/engine';
 import { Events } from '../core/events';
 import { RenderSystem } from './render/render_system';
-import { TestSystem } from './test-system';
+import { TestSystem } from './debug/test-system';
 import { InputSystem } from './input/input_system';
 import { CollisionSystem } from './collision/collision_system';
 import { KeyInput } from './input/key_input';

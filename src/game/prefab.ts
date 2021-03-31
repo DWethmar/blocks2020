@@ -10,6 +10,7 @@ import {
 } from '../core/component/position';
 import { createColliderComponent } from './collision/collider';
 import { createFollowComponent } from './behavior/follow';
+import { createDebugComponent } from './debug/debug';
 
 export interface Prefab {
     gameObject: GameObject;
@@ -47,6 +48,7 @@ export function createPlayerPrefab(position: Point3D): Prefab {
                 height: 16,
                 offSet: createPoint(-8, -16, 0),
             }),
+            createDebugComponent(player.ID),
         ],
     };
 }
@@ -80,6 +82,7 @@ export function createMobPrefab(position: Point3D): Prefab {
                 gameObjectId: mob.ID,
                 path: [createPoint(300, 200, 0), createPoint(23, 190, 0)],
             }),
+            createDebugComponent(mob.ID),
         ],
     };
 }
