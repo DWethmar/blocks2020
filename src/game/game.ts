@@ -9,6 +9,7 @@ import { KeyInput } from './input/key_input';
 import { GameEngine } from './game_engine';
 import { Dimensions } from './dimensions';
 import { FollowSystem } from './behavior/follow_system';
+import { ShooterSystem } from './shoot/shoot_system';
 
 export class Game {
     public engine: GameEngine;
@@ -38,6 +39,7 @@ export class Game {
         this.engine.addSystem(new InputSystem(this.keyInput));
         this.engine.addSystem(new CollisionSystem(this.events, sceneSize));
         this.engine.addSystem(new FollowSystem());
+        this.engine.addSystem(new ShooterSystem());
 
         app.ticker.add((delta: number) => {
             app.stage.sortChildren();

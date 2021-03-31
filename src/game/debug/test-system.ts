@@ -47,20 +47,18 @@ export class TestSystem implements System {
                 dotGraphics.transform.position.x = c.data.position.x;
                 dotGraphics.transform.position.y = c.data.position.y;
 
-                let tid = `${c.ID}_text`;
+                let tid = `${d.ID}_text`;
                 let textGraphic = getRendering(this.debugRenderings)(
                     tid
                 ) as PIXI.Text;
                 let debugText = [
-                    `x: ${Math.floor(c.data.position.x)} | ${
-                        c.data.velocity.x
-                    }`,
-                    `y:${Math.floor(c.data.position.y)} | ${c.data.velocity.y}`,
+                    `x:${Math.floor(c.data.position.x)}|${c.data.velocity.x}`,
+                    `y:${Math.floor(c.data.position.y)}|${c.data.velocity.y}`,
                 ].join('\n');
 
                 if (!textGraphic) {
                     textGraphic = new PIXI.Text(debugText, {
-                        fontFamily: 'Arial',
+                        fontFamily: 'monospace',
                         fontSize: 14,
                         fill: 0xff1010,
                         align: 'left',
@@ -72,9 +70,8 @@ export class TestSystem implements System {
                 textGraphic.transform.position.y = c.data.position.y;
                 textGraphic.text = debugText;
 
-                // physics debug
-                // Debug graphics
-                let pid = `${c.ID}_physics`;
+                // Debug physics debug
+                let pid = `${d.ID}_physics`;
                 const collision = engine.getComponent(
                     c.gameObjectID,
                     COLLISION_COMPONENT

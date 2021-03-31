@@ -2,6 +2,7 @@ import { KeyInput } from './key_input';
 import { System } from '../../core/system';
 import { GameEngine, POSITION_COMPONENT } from '../game_engine';
 import { MOVEMENT_CONTROLS_COMPONENT } from './movement_controls';
+import { DIRECTION_COMPONENT } from '../direction/direction';
 
 export class InputSystem implements System {
     private keyInput: KeyInput;
@@ -21,10 +22,7 @@ export class InputSystem implements System {
             MOVEMENT_CONTROLS_COMPONENT
         )) {
             const p = engine.getComponent(c.gameObjectID, POSITION_COMPONENT);
-
-            if (!p) {
-                return;
-            }
+            if (!p) continue;
 
             const maxSpeed = c.data.maxSpeed;
             const speed = c.data.speed;
@@ -86,6 +84,45 @@ export class InputSystem implements System {
             p.data.velocity.x = Math.round(p.data.velocity.x * 1000) / 1000;
 
             engine.updateComponent(c);
+
+            // update direction
+            const direction = engine.getComponent(
+                c.gameObjectID,
+                DIRECTION_COMPONENT
+            );
+            if (direction) {
+                const v = p.data.velocity;
+
+                let dx = direction.data.direction.x;
+                let dy = direction.data.direction.y;
+
+                if (v.x > 0) {
+                    dx = 1;
+                } else if (v.x < 0) {
+                    dx = -1;
+                } else {
+                    dx = 0;
+                }
+
+                if (v.y > 0) {
+                    dy = 1;
+                } else if (v.y < 0) {
+                    dy = -1;
+                } else {
+                    dy = 0;
+                }
+
+                if (
+                    dx != direction.data.direction.x ||
+                    dy != direction.data.direction.y
+                ) {
+                    direction.data.direction = {
+                        x: dx,
+                        y: dy,
+                    };
+                    engine.updateComponent(direction);
+                }
+            }
         }
     }
 }

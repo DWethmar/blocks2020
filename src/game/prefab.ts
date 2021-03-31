@@ -11,6 +11,7 @@ import {
 import { createColliderComponent } from './collision/collider';
 import { createFollowComponent } from './behavior/follow';
 import { createDebugComponent } from './debug/debug';
+import { createDirectionComponent } from './direction/direction';
 
 export interface Prefab {
     gameObject: GameObject;
@@ -49,6 +50,10 @@ export function createPlayerPrefab(position: Point3D): Prefab {
                 offSet: createPoint(-8, -16, 0),
             }),
             createDebugComponent(player.ID),
+            createDirectionComponent({
+                gameObjectId: player.ID,
+                direction: { x: 1, y: 0 },
+            }),
         ],
     };
 }
