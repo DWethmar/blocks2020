@@ -1,8 +1,8 @@
 import { addComponent, getComponent, deleteComponent } from './component';
-import { createPoint, createPositionComponent } from './position';
+import { createPoint3D, createPositionComponent } from './position';
 
 test('add component', () => {
-    const c = createPositionComponent('1', createPoint());
+    const c = createPositionComponent('1', createPoint3D());
     const components = {};
 
     addComponent(components)(c);
@@ -10,7 +10,7 @@ test('add component', () => {
 });
 
 test('add duplicate component', () => {
-    const c = createPositionComponent('1', createPoint());
+    const c = createPositionComponent('1', createPoint3D());
     const components = {};
 
     addComponent(components)(c);
@@ -21,7 +21,7 @@ test('add duplicate component', () => {
 });
 
 test('get component', () => {
-    const c = createPositionComponent('1', createPoint());
+    const c = createPositionComponent('1', createPoint3D());
     const components = {};
 
     addComponent(components)(c);
@@ -31,14 +31,14 @@ test('get component', () => {
 });
 
 test('delete component', () => {
-    const c = createPositionComponent('1', createPoint());
+    const c = createPositionComponent('1', createPoint3D());
     const components = {};
     addComponent(components)(c);
     expect(deleteComponent(components)(c.ID)).toBeTruthy();
 });
 
 test('delete non existing component', () => {
-    const c = createPositionComponent('1', createPoint());
+    const c = createPositionComponent('1', createPoint3D());
     const components = {};
     addComponent(components)(c);
     expect(deleteComponent(components)('x')).toBeFalsy();

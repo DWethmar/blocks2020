@@ -4,6 +4,7 @@ import { throttleTime } from 'rxjs/operators';
 import { useEffect, useState, useMemo } from 'react';
 import { GameEngine } from '../game/game_engine';
 import { State } from '../core/state';
+import { InspectComponent } from './component';
 
 export interface InspectorProps {
     engine: GameEngine;
@@ -64,7 +65,14 @@ export const Inspector: React.FunctionComponent<InspectorProps> = ({
                         <span>{selectedId}</span>
                         <pre>{JSON.stringify(selected[0], null, 4)}</pre>
                         <hr />
-                        <pre>{JSON.stringify(selected[1], null, 4)}</pre>
+                        Components:
+                        <ul className="component-list">
+                            {selected[1].map((c, i) => (
+                                <li key={i} className="component-list__item">
+                                    <InspectComponent component={c} />
+                                </li>
+                            ))}
+                        </ul>
                     </div>
                 ) : (
                     <span>None selected</span>

@@ -3,7 +3,7 @@ import { System } from '../../core/system';
 
 import { FOLLOW_COMPONENT } from './follow';
 import { distance } from '../../core/point';
-import { createPoint } from '../../core/component/position';
+import { createPoint3D } from '../../core/component/position';
 
 export class FollowSystem implements System {
     constructor() {}
@@ -22,7 +22,7 @@ export class FollowSystem implements System {
 
             const target = c.data.path[0];
             if (!target) {
-                p.data.velocity = createPoint();
+                p.data.velocity = createPoint3D();
                 engine.updateComponent(p);
                 continue;
             }

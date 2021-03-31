@@ -6,7 +6,7 @@ import { createMovementControlsComponent } from './input/movement_controls';
 import { GameEngine } from './game_engine';
 import {
     createPositionComponent,
-    createPoint,
+    createPoint3D,
 } from '../core/component/position';
 import { createColliderComponent } from './collision/collider';
 import { createFollowComponent } from './behavior/follow';
@@ -33,7 +33,7 @@ export function createPlayerPrefab(position: Point3D): Prefab {
                 gameObjectId: player.ID,
                 width: 16,
                 height: 16,
-                offSet: createPoint(-8, -16, 0),
+                offSet: createPoint3D(-8, -16, 0),
                 isStatic: false,
                 density: 0.005,
                 friction: 1,
@@ -47,7 +47,7 @@ export function createPlayerPrefab(position: Point3D): Prefab {
                 spriteName: 'colored_transparent-30.png',
                 width: 16,
                 height: 16,
-                offSet: createPoint(-8, -16, 0),
+                offSet: createPoint3D(-8, -16, 0),
             }),
             createDebugComponent(player.ID),
             createDirectionComponent({
@@ -68,7 +68,7 @@ export function createMobPrefab(position: Point3D): Prefab {
                 gameObjectId: mob.ID,
                 width: 16,
                 height: 16,
-                offSet: createPoint(-8, -16, 0),
+                offSet: createPoint3D(-8, -16, 0),
                 isStatic: false,
                 density: 0.01,
                 friction: 1,
@@ -81,11 +81,11 @@ export function createMobPrefab(position: Point3D): Prefab {
                 spriteName: 'colored_transparent-26.png',
                 width: 16,
                 height: 16,
-                offSet: createPoint(-8, -16, 0),
+                offSet: createPoint3D(-8, -16, 0),
             }),
             createFollowComponent({
                 gameObjectId: mob.ID,
-                path: [createPoint(300, 200, 0), createPoint(23, 190, 0)],
+                path: [createPoint3D(300, 200, 0), createPoint3D(23, 190, 0)],
             }),
             createDebugComponent(mob.ID),
         ],
@@ -102,7 +102,7 @@ export function createBoxPrefab(position: Point3D): Prefab {
                 gameObjectId: box.ID,
                 width: 16,
                 height: 16,
-                offSet: createPoint(-8, -16, 0),
+                offSet: createPoint3D(-8, -16, 0),
                 isStatic: false,
                 density: 0.005,
                 friction: 1,
@@ -115,7 +115,7 @@ export function createBoxPrefab(position: Point3D): Prefab {
                 spriteName: 'colored_transparent-578.png',
                 width: 16,
                 height: 16,
-                offSet: createPoint(-8, -16, 0),
+                offSet: createPoint3D(-8, -16, 0),
             }),
         ],
     };
@@ -131,7 +131,7 @@ export function createWallPrefab(position: Point3D): Prefab {
                 gameObjectId: wall.ID,
                 width: 16,
                 height: 16,
-                offSet: createPoint(-8, -16, 0),
+                offSet: createPoint3D(-8, -16, 0),
                 isStatic: true,
                 density: 0.005,
                 friction: 1,
@@ -144,7 +144,7 @@ export function createWallPrefab(position: Point3D): Prefab {
                 spriteName: 'colored_transparent-118.png',
                 width: 16,
                 height: 16,
-                offSet: createPoint(-8, -16, 0),
+                offSet: createPoint3D(-8, -16, 0),
             }),
         ],
     };
@@ -161,7 +161,7 @@ export function createTreePrefab(position: Point3D): Prefab {
                 spriteName: 'colored_transparent-31.png',
                 width: 16,
                 height: 16,
-                offSet: createPoint(-8, -16, 0),
+                offSet: createPoint3D(-8, -16, 0),
             }),
         ],
     };
@@ -178,7 +178,7 @@ export function createGrassPrefab(position: Point3D): Prefab {
                 spriteName: 'colored_transparent-4.png',
                 width: 16,
                 height: 16,
-                offSet: createPoint(-8, -16, 0),
+                offSet: createPoint3D(-8, -16, 0),
             }),
         ],
     };

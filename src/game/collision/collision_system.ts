@@ -10,7 +10,7 @@ import * as PIXI from 'pixi.js';
 import { addPoints, subPoints } from '../../core/point';
 
 import Matter from 'matter-js';
-import { createPoint } from '../../core/component/position';
+import { createPoint3D } from '../../core/component/position';
 
 // https://impactjs.com/forums/code/top-down-rpg-style-tile-based-grid-movement
 // https://gamedev.stackexchange.com/questions/50074/how-to-create-simple-acceleration-in-a-2d-sprite?noredirect=1&lq=1
@@ -65,7 +65,7 @@ export class CollisionSystem implements System {
             if (!body) continue;
 
             const colPos = subPoints(
-                createPoint(body.position.x, body.position.y, 0),
+                createPoint3D(body.position.x, body.position.y, 0),
                 c.data.offSet
             );
 

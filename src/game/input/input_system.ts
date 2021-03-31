@@ -101,7 +101,7 @@ export class InputSystem implements System {
                 } else if (v.x < 0) {
                     dx = -1;
                 } else {
-                    dx = 0;
+                    dy = 0;
                 }
 
                 if (v.y > 0) {
