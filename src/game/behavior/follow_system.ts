@@ -31,7 +31,7 @@ export class FollowSystem implements System {
 
             const d = distance(position, target);
             if (d < SPEED) {
-                c.data.path = [];
+                c.data.path.shift();
                 engine.updateComponent(c);
                 continue;
             }
@@ -55,76 +55,6 @@ export class FollowSystem implements System {
             p.data.velocity.y = dy * SPEED;
 
             engine.updateComponent(p);
-
-            // -----------------------------------------------------------------
-
-            // const maxSpeed = 2;
-            // const speed = 0.2;
-
-            // const x = Math.floor(p.data.position.x);
-            // const y = Math.floor(p.data.position.y);
-
-            // const tx = Math.floor(c.data.target.x);
-            // const ty = Math.floor(c.data.target.y);
-
-            // let keyUp = y != ty && y > ty;
-            // let keyDown = y != ty && y < ty;
-
-            // let keyLeft = x != tx && x > tx;
-            // let keyRight = x != tx && x < tx;
-
-            // if (keyUp && !keyDown) {
-            //     if (p.data.velocity.y - speed < -maxSpeed) {
-            //         p.data.velocity.y = -maxSpeed;
-            //     } else {
-            //         p.data.velocity.y -= speed;
-            //     }
-            // } else {
-            //     if (p.data.velocity.y < 0) {
-            //         p.data.velocity.y += speed;
-            //     }
-            // }
-
-            // if (keyDown && !keyUp) {
-            //     if (p.data.velocity.y + speed > maxSpeed) {
-            //         p.data.velocity.y = maxSpeed;
-            //     } else {
-            //         p.data.velocity.y += speed;
-            //     }
-            // } else {
-            //     if (p.data.velocity.y > 0) {
-            //         p.data.velocity.y -= speed;
-            //     }
-            // }
-
-            // if (keyLeft && !keyRight) {
-            //     if (p.data.velocity.x - speed < -maxSpeed) {
-            //         p.data.velocity.x = -maxSpeed;
-            //     } else {
-            //         p.data.velocity.x -= speed;
-            //     }
-            // } else {
-            //     if (p.data.velocity.x < 0) {
-            //         p.data.velocity.x += speed;
-            //     }
-            // }
-
-            // if (keyRight && !keyLeft) {
-            //     if (p.data.velocity.x + speed > maxSpeed) {
-            //         p.data.velocity.x = maxSpeed;
-            //     } else {
-            //         p.data.velocity.x += speed;
-            //     }
-            // } else {
-            //     if (p.data.velocity.x > 0) {
-            //         p.data.velocity.x -= speed;
-            //     }
-            // }
-
-            // p.data.velocity.y = Math.round(p.data.velocity.y * 1000) / 1000;
-            // p.data.velocity.x = Math.round(p.data.velocity.x * 1000) / 1000;
-
-            // engine.updateComponent(c);
         }
     }
 

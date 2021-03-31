@@ -12,7 +12,7 @@ export interface Follow extends Component {
 
 export interface createFollowComponentConfig {
     gameObjectId: string;
-    target: Point3D;
+    path: Point3D[];
 }
 
 export function createFollowComponent(
@@ -23,7 +23,7 @@ export function createFollowComponent(
         gameObjectID: config.gameObjectId,
         type: FOLLOW_COMPONENT,
         data: {
-            path: [config.target],
+            path: [...config.path],
         },
     };
 }

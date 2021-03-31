@@ -78,7 +78,7 @@ export function createMobPrefab(position: Point3D): Prefab {
             }),
             createFollowComponent({
                 gameObjectId: mob.ID,
-                target: createPoint(300, 200, 0),
+                path: [createPoint(300, 200, 0), createPoint(23, 190, 0)],
             }),
         ],
     };
