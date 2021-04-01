@@ -3,9 +3,10 @@ import { System } from '../../core/system';
 import { Events } from '../../core/events';
 import { GameEngine, POSITION_COMPONENT } from '../game_engine';
 import { Renderings, addRendering, getRendering } from '../render/renderings';
-import { addPoints } from '../../core/point';
+import { addPoints2D, addPoints3D } from '../../core/point';
 import { COLLISION_COMPONENT } from '../collision/collider';
 import { DEBUG_COMPONENT } from './debug';
+import { SPRITE_COMPONENT } from '../render/sprite';
 
 export class TestSystem implements System {
     private events: Events;
@@ -19,19 +20,49 @@ export class TestSystem implements System {
         this.stage = stage;
     }
 
-    onAttach(engine: GameEngine) {}
+    onAttach(engine: GameEngine) { }
 
-    beforeUpdate(engine: GameEngine): void {}
+    beforeUpdate(engine: GameEngine): void { }
 
-    afterUpdate(engine: GameEngine): void {}
+    afterUpdate(engine: GameEngine): void { }
 
     update(engine: GameEngine) {
         for (const d of engine.getComponentsByType(DEBUG_COMPONENT)) {
             // Debug position
-            const c = engine.getComponent(d.gameObjectID, POSITION_COMPONENT);
-            const x = engine.getComponent(d.gameObjectID, COLLISION_COMPONENT);
-            if (x && c) {
-                let gid = `${d.ID}_graphics`;
+            const pos = engine.getComponent(d.gameObjectID, POSITION_COMPONENT);
+            const col = engine.getComponent(d.gameObjectID, COLLISION_COMPONENT);
+            const sprite = engine.getComponent(d.gameObjectID, SPRITE_COMPONENT);
+
+            if (sprite && pos) {
+                // Debug physics debug
+                let pid = `${d.ID}_sprite`;
+                let spriteGraphics = getRendering(this.debugRenderings)(
+                    pid
+                ) as PIXI.Graphics;
+
+                if (!spriteGraphics) {
+                    spriteGraphics = new PIXI.Graphics();
+                    spriteGraphics.lineStyle(1, 0x00FF00);
+                    spriteGraphics.drawRect(
+                        0,
+                        0,
+                        sprite.data.width,
+                        sprite.data.height,
+                    );
+                    this.stage.addChild(spriteGraphics);
+                    addRendering(this.debugRenderings)(
+                        pid,
+                        spriteGraphics
+                    );
+                }
+
+                const spritePos = addPoints2D(pos.data.position, sprite.data.offSet);
+                spriteGraphics.position.x = spritePos.x;
+                spriteGraphics.position.y = spritePos.y;
+            }
+
+            if (pos) {
+                let gid = `${d.ID}_position`;
                 let dotGraphics = getRendering(this.debugRenderings)(
                     gid
                 ) as PIXI.Graphics;
@@ -44,16 +75,17 @@ export class TestSystem implements System {
                     this.stage.addChild(dotGraphics);
                     addRendering(this.debugRenderings)(gid, dotGraphics);
                 }
-                dotGraphics.transform.position.x = c.data.position.x;
-                dotGraphics.transform.position.y = c.data.position.y;
+
+                dotGraphics.transform.position.x = pos.data.position.x;
+                dotGraphics.transform.position.y = pos.data.position.y;
 
                 let tid = `${d.ID}_text`;
                 let textGraphic = getRendering(this.debugRenderings)(
                     tid
                 ) as PIXI.Text;
                 let debugText = [
-                    `x:${Math.floor(c.data.position.x)}|${c.data.velocity.x}`,
-                    `y:${Math.floor(c.data.position.y)}|${c.data.velocity.y}`,
+                    `x:${Math.floor(pos.data.position.x)}|${pos.data.velocity.x}`,
+                    `y:${Math.floor(pos.data.position.y)}|${pos.data.velocity.y}`,
                 ].join('\n');
 
                 if (!textGraphic) {
@@ -66,57 +98,54 @@ export class TestSystem implements System {
                     this.stage.addChild(textGraphic);
                     addRendering(this.debugRenderings)(tid, textGraphic);
                 }
-                textGraphic.transform.position.x = c.data.position.x;
-                textGraphic.transform.position.y = c.data.position.y;
-                textGraphic.text = debugText;
 
+                textGraphic.transform.position.x = pos.data.position.x;
+                textGraphic.transform.position.y = pos.data.position.y;
+                textGraphic.text = debugText;
+            }
+
+            if (col && pos) {
                 // Debug physics debug
                 let pid = `${d.ID}_physics`;
-                const collision = engine.getComponent(
-                    c.gameObjectID,
-                    COLLISION_COMPONENT
-                );
-                if (collision) {
-                    let physicsGraphics = getRendering(this.debugRenderings)(
-                        pid
-                    ) as PIXI.Graphics;
+                let physicsGraphics = getRendering(this.debugRenderings)(
+                    pid
+                ) as PIXI.Graphics;
 
-                    const collisionPos = c.data.position;
+                if (!physicsGraphics) {
+                    physicsGraphics = new PIXI.Graphics();
+                    // set the line style to have a width of 5 and set the color to red
+                    physicsGraphics.lineStyle(1, 0xff0000);
 
-                    if (!physicsGraphics) {
-                        physicsGraphics = new PIXI.Graphics();
-                        // set the line style to have a width of 5 and set the color to red
-                        physicsGraphics.lineStyle(1, 0xff0000);
-
-                        if (collision.data.shape.kind == 'square') {
-                            // draw a rectangle
-                            physicsGraphics.drawRect(
-                                0,
-                                0,
-                                collision.data.shape.width,
-                                collision.data.shape.height
-                            );
-                        }
-
-                        if (collision.data.shape.kind == 'circle') {
-                            // draw a circle
-                            physicsGraphics.drawCircle(
-                                0,
-                                0,
-                                collision.data.shape.radius
-                            );
-                        }
-
-                        this.stage.addChild(physicsGraphics);
-                        addRendering(this.debugRenderings)(
-                            pid,
-                            physicsGraphics
+                    if (col.data.shape.kind == 'square') {
+                        // draw a rectangle
+                        physicsGraphics.drawRect(
+                            0,
+                            0,
+                            col.data.shape.width,
+                            col.data.shape.height
                         );
                     }
 
-                    physicsGraphics.transform.position.x = collisionPos.x;
-                    physicsGraphics.transform.position.y = collisionPos.y;
+                    if (col.data.shape.kind == 'circle') {
+                        // draw a circle
+                        physicsGraphics.drawCircle(
+                            0,
+                            0,
+                            col.data.shape.radius
+                        );
+                    }
+
+                    this.stage.addChild(physicsGraphics);
+                    addRendering(this.debugRenderings)(
+                        pid,
+                        physicsGraphics
+                    );
                 }
+
+                const physicsGraphicsPos = addPoints2D(pos.data.position, col.data.offSet);
+
+                physicsGraphics.position.x = physicsGraphicsPos.x;
+                physicsGraphics.position.y = physicsGraphicsPos.y;
             }
         }
     }

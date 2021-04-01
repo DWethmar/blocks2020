@@ -23,7 +23,7 @@ if (viewContainer) {
     const gameObjectCreator = createFromPrefab(game.engine);
 
     gameObjectCreator(createPlayerPrefab(createPoint3D(20, 20)));
-    gameObjectCreator(createWallPrefab(createPoint3D(50, 50)));
+    gameObjectCreator(createWallPrefab(createPoint3D(50, 150)));
     gameObjectCreator(createTreePrefab(createPoint3D(100, 100)));
     gameObjectCreator(createGrassPrefab(createPoint3D(150, 150)));
 

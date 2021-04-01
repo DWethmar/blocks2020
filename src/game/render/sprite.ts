@@ -1,6 +1,6 @@
 import { Component } from '../../core/component/component';
 import { createUniqueId } from '../../core/id';
-import { Point3D } from '../../core/point';
+import { Point2D, Point3D } from '../../core/point';
 import { Dimensions } from '../dimensions';
 
 export const SPRITE_COMPONENT = 'SPRITE';
@@ -8,7 +8,7 @@ export const SPRITE_COMPONENT = 'SPRITE';
 export interface Sprite extends Component {
     data: Dimensions & {
         name: string;
-        offSet: Point3D;
+        offSet: Point2D;
     };
 }
 
@@ -17,7 +17,7 @@ export interface createSpriteComponentConfig {
     spriteName: string;
     width: number;
     height: number;
-    offSet: Point3D;
+    offSet: Point2D;
 }
 
 export function createSpriteComponent(

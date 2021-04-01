@@ -7,6 +7,7 @@ import { GameEngine } from './game_engine';
 import {
     createPositionComponent,
     createPoint3D,
+    createPoint2D,
 } from '../core/component/position';
 import { createColliderComponent } from './collision/collider';
 import { createFollowComponent } from './behavior/follow';
@@ -34,9 +35,10 @@ export function createPlayerPrefab(position: Point3D): Prefab {
             createColliderComponent({
                 shape: {
                     kind: 'square',
-                    width: 16,
-                    height: 16,
+                    width: 20,
+                    height: 20,
                 },
+                offSet: createPoint2D(-10, -20),
                 gameObjectId: player.ID,
                 isStatic: false,
                 density: 0.005,
@@ -49,9 +51,9 @@ export function createPlayerPrefab(position: Point3D): Prefab {
             createSpriteComponent({
                 gameObjectId: player.ID,
                 spriteName: 'colored_transparent-30.png',
-                width: 16,
-                height: 16,
-                offSet: createPoint3D(), // createPoint3D(-8, -16, 0),
+                width: 40,
+                height: 40,
+                offSet: createPoint2D(-20, -40),
             }),
             createDebugComponent(player.ID),
             createDirectionComponent({
@@ -74,11 +76,19 @@ export function createBulletPrefab(
         gameObject: bullet,
         components: [
             createPositionComponent(bullet.ID, position),
+            createSpriteComponent({
+                gameObjectId: bullet.ID,
+                spriteName: 'colored_transparent-666.png',
+                width: 16,
+                height: 16,
+                offSet: createPoint2D(-8, -16),
+            }),
             createColliderComponent({
                 shape: {
                     kind: 'circle',
                     radius: 4,
                 },
+                offSet: createPoint2D(-8, 16),
                 gameObjectId: bullet.ID,
                 isStatic: false,
                 density: 0.01,
@@ -92,13 +102,6 @@ export function createBulletPrefab(
             createBulletComponent({
                 gameObjectId: bullet.ID,
                 direction: direction,
-            }),
-            createSpriteComponent({
-                gameObjectId: bullet.ID,
-                spriteName: 'colored_transparent-666.png',
-                width: 16,
-                height: 16,
-                offSet: createPoint3D(), // createPoint3D(-8, -16, 0),
             }),
         ],
     };
@@ -116,6 +119,7 @@ export function createMobPrefab(position: Point3D): Prefab {
                     width: 16,
                     height: 16,
                 },
+                offSet: createPoint2D(-8, -16),
                 gameObjectId: mob.ID,
                 isStatic: false,
                 density: 0.01,
@@ -129,7 +133,7 @@ export function createMobPrefab(position: Point3D): Prefab {
                 spriteName: 'colored_transparent-26.png',
                 width: 16,
                 height: 16,
-                offSet: createPoint3D(), // createPoint3D(-8, -16, 0),
+                offSet: createPoint2D(-8, -16),
             }),
             createFollowComponent({
                 gameObjectId: mob.ID,
@@ -152,6 +156,7 @@ export function createBoxPrefab(position: Point3D): Prefab {
                     width: 16,
                     height: 16,
                 },
+                offSet: createPoint2D(-8, -16),
                 gameObjectId: box.ID,
                 isStatic: false,
                 density: 0.005,
@@ -165,7 +170,7 @@ export function createBoxPrefab(position: Point3D): Prefab {
                 spriteName: 'colored_transparent-578.png',
                 width: 16,
                 height: 16,
-                offSet: createPoint3D(), // createPoint3D(-8, -16, 0),
+                offSet: createPoint2D(-8, -16),
             }),
         ],
     };
@@ -183,6 +188,7 @@ export function createWallPrefab(position: Point3D): Prefab {
                     width: 16,
                     height: 16,
                 },
+                offSet: createPoint2D(-8, -16),
                 gameObjectId: wall.ID,
                 isStatic: true,
                 density: 0.005,
@@ -196,7 +202,7 @@ export function createWallPrefab(position: Point3D): Prefab {
                 spriteName: 'colored_transparent-118.png',
                 width: 16,
                 height: 16,
-                offSet: createPoint3D(), // createPoint3D(-8, -16, 0),
+                offSet: createPoint2D(-8, -16),
             }),
         ],
     };
@@ -213,7 +219,7 @@ export function createTreePrefab(position: Point3D): Prefab {
                 spriteName: 'colored_transparent-31.png',
                 width: 16,
                 height: 16,
-                offSet: createPoint3D(), // createPoint3D(-8, -16, 0),
+                offSet: createPoint3D(-8, -16, 0),
             }),
         ],
     };
@@ -230,7 +236,7 @@ export function createGrassPrefab(position: Point3D): Prefab {
                 spriteName: 'colored_transparent-4.png',
                 width: 16,
                 height: 16,
-                offSet: createPoint3D(), // createPoint3D(-8, -16, 0),
+                offSet: createPoint3D(-8, -16, 0),
             }),
         ],
     };

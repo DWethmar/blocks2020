@@ -7,7 +7,7 @@ export type Point3D = Point2D & {
     z: number;
 };
 
-export function addPoints(a: Point3D, b: Point3D) {
+export function addPoints3D(a: Point3D, b: Point3D) {
     return {
         x: a.x + b.x,
         y: a.y + b.y,
@@ -15,11 +15,25 @@ export function addPoints(a: Point3D, b: Point3D) {
     };
 }
 
-export function subPoints(a: Point3D, b: Point3D) {
+export function addPoints2D(a: Point2D, b: Point2D) {
+    return {
+        x: a.x + b.x,
+        y: a.y + b.y,
+    };
+}
+
+export function subPoints3D(a: Point3D, b: Point3D) {
     return {
         x: a.x - b.x,
         y: a.y - b.y,
         z: a.z - a.z,
+    };
+}
+
+export function subPoints2D(a: Point2D, b: Point2D) {
+    return {
+        x: a.x - b.x,
+        y: a.y - b.y,
     };
 }
 

@@ -1,6 +1,6 @@
 import { Component } from '../../core/component/component';
 import { createUniqueId } from '../../core/id';
-import { Point3D } from '../../core/point';
+import { Point2D, Point3D } from '../../core/point';
 import { Dimensions } from '../dimensions';
 
 export const COLLISION_COMPONENT = 'COLLISION';
@@ -18,6 +18,7 @@ export interface Square extends Dimensions {
 
 export interface Collider extends Component {
     data: {
+        offSet: Point2D;
         shape: Circle | Square;
         isStatic: boolean;
         density: number;
@@ -38,6 +39,7 @@ export interface Collider extends Component {
  */
 export interface createColliderComponentConfig {
     gameObjectId: string;
+    offSet: Point2D;
     shape: shapes;
     isStatic: boolean;
     density?: number;
@@ -57,6 +59,7 @@ export function createColliderComponent(
         gameObjectID: config.gameObjectId,
         type: COLLISION_COMPONENT,
         data: {
+            offSet: config.offSet,
             shape: config.shape,
             isStatic: config.isStatic,
             density: config.density || 0.005,

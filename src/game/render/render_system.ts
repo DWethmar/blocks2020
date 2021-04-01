@@ -1,5 +1,5 @@
 import * as PIXI from 'pixi.js';
-import { addPoints } from '../../core/point';
+import { addPoints2D, addPoints3D } from '../../core/point';
 import { System } from '../../core/system';
 import { GameEngine, POSITION_COMPONENT } from '../game_engine';
 import { SPRITE_COMPONENT } from './sprite';
@@ -30,9 +30,9 @@ export class RenderSystem implements System {
         });
     }
 
-    beforeUpdate(engine: GameEngine): void {}
+    beforeUpdate(engine: GameEngine): void { }
 
-    afterUpdate(engine: GameEngine): void {}
+    afterUpdate(engine: GameEngine): void { }
 
     update(engine: GameEngine) {
         if (!this.spritesheet) {
@@ -68,7 +68,7 @@ export class RenderSystem implements System {
                 addRendering(this.renderings)(c.ID, sprite);
             }
 
-            const spritePos = addPoints(position.data.position, c.data.offSet);
+            const spritePos = addPoints2D(position.data.position, c.data.offSet);
 
             sprite.position.x = spritePos.x;
             sprite.position.y = spritePos.y;

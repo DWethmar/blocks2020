@@ -24,9 +24,9 @@ export class ShooterSystem implements System {
         this.keyInput = keyInput;
     }
 
-    onAttach(engine: GameEngine) {}
+    onAttach(engine: GameEngine) { }
 
-    beforeUpdate(engine: GameEngine): void {}
+    beforeUpdate(engine: GameEngine): void { }
 
     update(engine: GameEngine) {
         for (const c of engine.getComponentsByType(SHOOTER_COMPONENT)) {
@@ -43,14 +43,14 @@ export class ShooterSystem implements System {
             );
             if (!direction) continue;
 
-            const now = Date.now();
-            if (now > c.data.last + c.data.coolDownMS) {
-                c.data.last = now;
-            } else {
-                continue;
-            }
-
             if (shoot) {
+                const now = Date.now();
+                if (now > c.data.last + c.data.coolDownMS) {
+                    c.data.last = now;
+                } else {
+                    continue;
+                }
+
                 const shooterDirection = direction.data.direction;
                 const bulletPos = createPoint2D(
                     position.data.position.x,
@@ -84,5 +84,5 @@ export class ShooterSystem implements System {
         }
     }
 
-    afterUpdate(engine: GameEngine): void {}
+    afterUpdate(engine: GameEngine): void { }
 }
